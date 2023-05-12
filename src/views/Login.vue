@@ -10,14 +10,14 @@
     </div>
     <form action="" class="form" @submit.prevent.stop="handleSubmit">
       <div class="form__group">
-        <label for="email" class="second-font">
+        <label for="account" class="second-font">
           帳號
         </label>
         <input
-          id="email"
-          v-model="email"
-          name="email"
-          type="email"
+          id="account"
+          v-model="account"
+          name="account"
+          type="text"
           placeholder="請輸入帳號"
           required
           autocomplete
@@ -44,7 +44,7 @@
       </div>
     </form>
     <div class="portal">
-      <router-link to="/register">註冊</router-link>
+      <router-link to="/regist">註冊</router-link>
       &middot;
       <router-link to="/admin">後台登入</router-link>
     </div>
@@ -55,14 +55,14 @@
 export default {
   data() {
     return {
-      email: '',
+      account: '',
       password: ''
     }
   },
   methods: {
     handleSubmit () {
       const data = JSON.stringify({
-        email: this.email,
+        account: this.account,
         password: this.password
       })
 
