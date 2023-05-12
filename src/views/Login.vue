@@ -8,21 +8,39 @@
         <h3>登入 Alphitter</h3>
       </div>
     </div>
-    <form action="" class="form">
+    <form action="" class="form" @submit.prevent.stop="handleSubmit">
       <div class="form__group">
-        <label for="" class="second-font">
+        <label for="email" class="second-font">
           帳號
         </label>
-        <input type="text" placeholder="請輸入帳號">
+        <input
+          id="email"
+          v-model="email"
+          name="email"
+          type="email"
+          placeholder="請輸入帳號"
+          required
+          autocomplete
+          autofocus
+        >
       </div>
       <div class="form__group">
         <label for="" class="second-font">
           密碼
         </label>
-        <input type="password" placeholder="請輸入密碼">
+        <input
+          id="password"
+          v-model="password"
+          name="password"
+          type="password"
+          placeholder="請輸入密碼"
+          required
+        >
       </div>
       <div class="form__btn">
-        <button>登入</button>
+        <button
+          type="submit"
+        >登入</button>
       </div>
     </form>
     <div class="portal">
@@ -32,6 +50,27 @@
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      email: '',
+      password: ''
+    }
+  },
+  methods: {
+    handleSubmit () {
+      const data = JSON.stringify({
+        email: this.email,
+        password: this.password
+      })
+
+      console.log(data)
+    }
+  }
+}
+</script>
 
 <style lang="scss" scoped>
 .container {
