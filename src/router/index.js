@@ -24,6 +24,11 @@ const routes = [
     component: Regist
   },
   {
+    path: '/user/:id',
+    name: 'user',
+    component: () => import('../views/User.vue')
+  },
+  {
     // 若沒有找到對應 path ，都會跑來這個 route
     path: '*',
     name: 'not-found',
