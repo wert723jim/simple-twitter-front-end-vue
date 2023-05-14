@@ -44,6 +44,7 @@
       </div>
 
       <!-- list tabs -->
+      <ListTabs />
 
       <div class="list">
         <div class="list__post">
@@ -112,9 +113,12 @@
 </template>
 
 <script>
+import ListTabs from '../components/ListTabs.vue'
 
 export default {
- 
+  components: {
+    ListTabs
+  }
 }
 </script>
 
