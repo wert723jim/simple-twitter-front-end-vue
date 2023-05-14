@@ -96,7 +96,7 @@ export default {
 .container {
   height: 100%;
   padding-left: 202px;
-  padding-right: 297px;
+  padding-right: 24px;
 }
 
 .wrapper {
