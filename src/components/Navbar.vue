@@ -27,7 +27,7 @@
     </div>
     <div class="btn">
       <!-- create modal -->
-      <button>
+      <button @click="showModal">
         推文
       </button>
     </div>
@@ -36,8 +36,38 @@
           <img src="../assets/img/logout@2x.png" alt="" class="logout__link">
         </router-link>
     </div>
+
+    <transition>
+      <TweetModal
+        :modalShow="modalShow"
+        v-if="modalShow"
+        @modalClose="closeModal"
+      />
+    </transition>
   </nav>
 </template>
+
+<script>
+import TweetModal from '../components/TweetModal.vue'
+export default {
+  components: {
+    TweetModal
+  },
+  data() {
+    return {
+      modalShow: false
+    }
+  },
+  methods: {
+    showModal() {
+      this.modalShow = true
+    },
+    closeModal() {
+      this.modalShow = false
+    }
+  }
+}
+</script>
 
 <style lang="scss" scoped>
 nav {
