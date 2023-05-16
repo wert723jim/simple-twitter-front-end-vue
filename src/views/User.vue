@@ -20,7 +20,7 @@
             <img src="" alt="">
           </div>
           <div class="info__top__btn">
-            <button>編輯個人資料</button>
+            <button @click.stop.prevent="showModal">編輯個人資料</button>
           </div>
         </div>
 
@@ -109,15 +109,36 @@
         </div>
       </div>
     </div>
+    <transition>
+      <EditUserModal
+        v-if="modalShow"
+        @modalClose="closeModal"
+      />
+    </transition>
   </div>
 </template>
 
 <script>
 import ListTabs from '../components/ListTabs.vue'
+import EditUserModal from '../components/EditUserModal.vue'
 
 export default {
   components: {
-    ListTabs
+    ListTabs,
+    EditUserModal
+  },
+  data() {
+    return {
+      modalShow: false
+    }
+  },
+  methods: {
+    showModal() {
+      this.modalShow = true
+    },
+    closeModal() {
+      this.modalShow = false
+    }
   }
 }
 </script>
