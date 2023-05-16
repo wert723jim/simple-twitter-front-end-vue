@@ -35,14 +35,21 @@
                 <span>3小時</span>
               </div>
             </div>
-            <div class="list__post__info__content">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae, vitae! Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto, quaerat.
-            </div>
+            <router-link to="#" class="list__post__info__content">
+              <div>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae, vitae! Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto, quaerat.
+              </div>
+            </router-link>
+            
             <div class="list__post__info__box second-font">
-              <div class="list__post__info__box__replies">
+              <a
+                href="#"
+                class="list__post__info__box__replies"
+                @click.stop.prevent="showModal"
+              >
                 <img src="../assets/img/icon_reply@2x.png" alt="">
                 <span>13</span>
-              </div>
+              </a>
               <div class="list__post__info__box__likes">
                 <img src="../assets/img/icon_like@2x.png" alt="">
                 <span>76</span>
@@ -82,13 +89,36 @@
         </div>
       </div>
     </div>
+    <transition>
+      <ReplyModal
+        :modalShow="modalShow"
+        v-if="modalShow"
+        @modalClose="closeModal"
+      />
+    </transition>
   </div>
 </template>
 
 <script>
+import ReplyModal from '../components/ReplyModal.vue'
 
 export default {
- 
+  components: {
+    ReplyModal
+  },
+  data() {
+    return {
+      modalShow: false
+    }
+  },
+  methods: {
+    showModal() {
+      this.modalShow = true
+    },
+    closeModal() {
+      this.modalShow = false
+    }
+  }
 }
 </script>
 
@@ -190,7 +220,10 @@ export default {
       margin-left: 8px;
 
       &__content {
+        display: block;
         margin-bottom: 9px;
+        text-decoration: none;
+        color: #171725;
       }
 
       &__user {
@@ -211,6 +244,7 @@ export default {
           display: flex;
           color: $secondary;
           gap: 8px;
+          text-decoration: none;
 
           img {
             width: 16px;
