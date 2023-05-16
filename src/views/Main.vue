@@ -35,7 +35,7 @@
                 <span>3小時</span>
               </div>
             </div>
-            <router-link to="#" class="list__post__info__content">
+            <router-link to="/post/1" class="list__post__info__content">
               <div>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae, vitae! Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto, quaerat.
               </div>

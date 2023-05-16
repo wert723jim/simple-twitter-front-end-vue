@@ -24,6 +24,11 @@ const routes = [
     component: Regist
   },
   {
+    path: '/post/:id',
+    name: 'post',
+    component: () => import ('../views/Post.vue')
+  },
+  {
     path: '/user/:id/setting',
     name: 'setting',
     component: () => import('../views/Setting.vue')
