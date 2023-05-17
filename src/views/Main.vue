@@ -19,92 +19,18 @@
         </div>
       </div>
 
-      <div class="list">
-        <div class="list__post">
-          <div class="list__post__headshot">
-            <img src="" alt="">
-          </div>
-          <div class="list__post__info">
-            <div class="list__post__info__user">
-              <div class="list__post__info__user__name">
-                Apple
-              </div>
-              <div class="list__post__info__user__decor second-font">
-                <span>@apple</span>
-                &middot;
-                <span>3小時</span>
-              </div>
-            </div>
-            <router-link to="/post/1" class="list__post__info__content">
-              <div>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae, vitae! Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto, quaerat.
-              </div>
-            </router-link>
-            
-            <div class="list__post__info__box second-font">
-              <a
-                href="#"
-                class="list__post__info__box__replies"
-                @click.stop.prevent="showModal"
-              >
-                <img src="../assets/img/icon_reply@2x.png" alt="">
-                <span>13</span>
-              </a>
-              <div class="list__post__info__box__likes">
-                <img src="../assets/img/icon_like@2x.png" alt="">
-                <span>76</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="list__post">
-          <div class="list__post__headshot">
-            <img src="" alt="">
-          </div>
-          <div class="list__post__info">
-            <div class="list__post__info__user">
-              <div class="list__post__info__user__name">
-                Apple
-              </div>
-              <div class="list__post__info__user__decor second-font">
-                <span>@apple</span>
-                &middot;
-                <span>3小時</span>
-              </div>
-            </div>
-            <div class="list__post__info__content">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae, vitae! Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto, quaerat.
-            </div>
-            <div class="list__post__info__box second-font">
-              <div class="list__post__info__box__replies">
-                <img src="../assets/img/icon_reply@2x.png" alt="">
-                <span>13</span>
-              </div>
-              <div class="list__post__info__box__likes">
-                <img src="../assets/img/icon_like@2x.png" alt="">
-                <span>76</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <TweetsList />
     </div>
-    <transition>
-      <ReplyModal
-        :modalShow="modalShow"
-        v-if="modalShow"
-        @modalClose="closeModal"
-      />
-    </transition>
+    
   </div>
 </template>
 
 <script>
-import ReplyModal from '../components/ReplyModal.vue'
+import TweetsList from '../components/TweetsList.vue'
 
 export default {
   components: {
-    ReplyModal
+    TweetsList
   },
   data() {
     return {

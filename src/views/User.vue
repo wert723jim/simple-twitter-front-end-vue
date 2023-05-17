@@ -19,9 +19,10 @@
           <div class="info__top__headshot">
             <img src="" alt="">
           </div>
-          <div class="info__top__btn">
-            <button @click.stop.prevent="showModal">編輯個人資料</button>
-          </div>
+        </div>
+
+        <div class="info__btn">
+          <button @click.stop.prevent="showModal">編輯個人資料</button>
         </div>
 
         <div class="info__text">
@@ -46,68 +47,7 @@
       <!-- list tabs -->
       <ListTabs />
 
-      <div class="list">
-        <div class="list__post">
-          <div class="list__post__headshot">
-            <img src="" alt="">
-          </div>
-          <div class="list__post__info">
-            <div class="list__post__info__user">
-              <div class="list__post__info__user__name">
-                Apple
-              </div>
-              <div class="list__post__info__user__decor second-font">
-                <span>@apple</span>
-                &middot;
-                <span>3小時</span>
-              </div>
-            </div>
-            <div class="list__post__info__content">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae, vitae! Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto, quaerat.
-            </div>
-            <div class="list__post__info__box second-font">
-              <div class="list__post__info__box__replies">
-                <img src="../assets/img/icon_reply@2x.png" alt="">
-                <span>13</span>
-              </div>
-              <div class="list__post__info__box__likes">
-                <img src="../assets/img/icon_like@2x.png" alt="">
-                <span>76</span>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="list__post">
-          <div class="list__post__headshot">
-            <img src="" alt="">
-          </div>
-          <div class="list__post__info">
-            <div class="list__post__info__user">
-              <div class="list__post__info__user__name">
-                Apple
-              </div>
-              <div class="list__post__info__user__decor second-font">
-                <span>@apple</span>
-                &middot;
-                <span>3小時</span>
-              </div>
-            </div>
-            <div class="list__post__info__content">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae, vitae! Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto, quaerat.
-            </div>
-            <div class="list__post__info__box second-font">
-              <div class="list__post__info__box__replies">
-                <img src="../assets/img/icon_reply@2x.png" alt="">
-                <span>13</span>
-              </div>
-              <div class="list__post__info__box__likes">
-                <img src="../assets/img/icon_like@2x.png" alt="">
-                <span>76</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <TweetsList />
     </div>
     <transition>
       <EditUserModal
@@ -121,11 +61,13 @@
 <script>
 import ListTabs from '../components/ListTabs.vue'
 import EditUserModal from '../components/EditUserModal.vue'
+import TweetsList from '../components/TweetsList.vue'
 
 export default {
   components: {
     ListTabs,
-    EditUserModal
+    EditUserModal,
+    TweetsList
   },
   data() {
     return {
@@ -193,7 +135,7 @@ export default {
     z-index: -1;
 
     &__cover {
-      margin-bottom: 72px;
+      margin-bottom: 16px;
       height: 200px;
       background: black;
     }
@@ -208,20 +150,20 @@ export default {
       background: blue;
       border: 4px solid #FFFFFF;
     }
+  }
 
-    &__btn {
-      position: absolute;
-      right: 16px;
-      top: 216px;
-
-      button {
-        width: 128px;
-        height: 40px;
-        color: $brand-color;
-        border: 1px solid $brand-color;
-        background: white;
-        border-radius: 50px;
-      }
+  &__btn {
+    // position: relative;
+    margin-bottom: 16px;
+    padding-right:16px;
+    text-align: right;
+    button {
+      width: 128px;
+      height: 40px;
+      color: $brand-color;
+      border: 1px solid $brand-color;
+      background: white;
+      border-radius: 50px;
     }
   }
 
