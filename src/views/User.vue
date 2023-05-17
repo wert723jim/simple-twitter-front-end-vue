@@ -2,9 +2,9 @@
   <div class="container">
     <div class="wrapper">
       <div class="title">
-        <router-link to="back" class="title__back">
+        <a href="" class="title__back" @click.stop.prevent="$router.back()">
           <img src="../assets/img/icon_back@2x.png" alt="" class="title__back__img">
-        </router-link>
+        </a>
         <div class="title__content">
           <h5>John Doe</h5>
           <div class="title__content__count second-font">25 推文</div>
