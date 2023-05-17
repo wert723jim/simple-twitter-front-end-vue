@@ -189,6 +189,9 @@ export default {
 .info {
   &__top {
     position: relative;
+    // 避免擋到 Navbar popup TweetModal
+    z-index: -1;
+
     &__cover {
       margin-bottom: 72px;
       height: 200px;
