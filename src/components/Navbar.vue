@@ -1,26 +1,29 @@
 <template>
   <nav>
     <div class="brand_img">
-      <router-link to="main">
+      <router-link to="/">
         <img src="../assets/img/logo@2x.png" alt="">
       </router-link>
     </div>
     <div class="list">
       <div class="list__group">
-        <router-link to="main" class="list__group__link">
+        <router-link to="/main" class="list__group__link">
           <img src="../assets/img/main@2x.png" alt="" class="list__group__link__img">
+          <img src="../assets/img/main-c@2x.png" alt="" class="list__group__link__img--active">
           <!-- <span class="list__group__link__text">首頁</span> -->
         </router-link>
       </div>
       <div class="list__group">
-        <router-link to="profile" class="list__group__link">
+        <router-link to="/user/1" class="list__group__link">
           <img src="../assets/img/profile@2x.png" alt="" class="list__group__link__img">
+          <img src="../assets/img/profile-c@2x.png" alt="" class="list__group__link__img--active">
           <!-- <span class="list__group__link__text">個人資料</span> -->
         </router-link>
       </div>
       <div class="list__group">
-        <router-link to="setting" class="list__group__link">
+        <router-link to="/user/1/setting" class="list__group__link">
           <img src="../assets/img/setting@2x.png" alt="" class="list__group__link__img">
+          <img src="../assets/img/setting-c@2x.png" alt="" class="list__group__link__img--active">
           <!-- <span class="list__group__link__text">設定</span> -->
         </router-link>
       </div>
@@ -104,6 +107,21 @@ nav {
         display: block;
         width: 100%;
         height: 100%;
+
+        &--active {
+          display: none;
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+    // 按鈕圖案變換，藉由router-link點選後給予的class : router-link-exact-active 
+    .router-link-exact-active {
+      .list__group__link__img {
+        display: none;
+      }
+      .list__group__link__img--active {
+        display: block;
       }
     }
   }
