@@ -33,19 +33,21 @@
           <div class="info__text__intro">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit, fugiat?
           </div>
-          <div class="info__text__followship">
-            <div class="info__text__followship__followings">
-              34 個<span>跟隨中</span> 
+          <router-link to="/user/1/follower">
+            <div class="info__text__followship">
+              <div class="info__text__followship__followings">
+                34 個<span>跟隨中</span> 
+              </div>
+              <div class="info__text__followship__followers">
+                59 位<span>跟隨者</span>
+              </div>
             </div>
-            <div class="info__text__followship__followers">
-              59 位<span>跟隨者</span>
-            </div>
-          </div>
+          </router-link>
+          
         </div>
       </div>
 
-      <!-- list tabs -->
-      <ListTabs />
+      <Tabs :tabs="['推文', '回覆', '喜歡的內容']"/>
 
       <TweetsList />
     </div>
@@ -59,15 +61,15 @@
 </template>
 
 <script>
-import ListTabs from '../components/ListTabs.vue'
 import EditUserModal from '../components/EditUserModal.vue'
 import TweetsList from '../components/TweetsList.vue'
+import Tabs from '../components/Tabs.vue'
 
 export default {
   components: {
-    ListTabs,
     EditUserModal,
-    TweetsList
+    TweetsList,
+    Tabs
   },
   data() {
     return {
@@ -182,10 +184,16 @@ export default {
       margin-bottom: 8px;
     }
 
+    a {
+      text-decoration: none;
+      color: #171725;
+    }
+
     &__followship {
       display: flex;
       gap: 20px;
       margin-bottom: 16px;
+      
 
       span {
         color: $secondary;

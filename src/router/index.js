@@ -34,6 +34,11 @@ const routes = [
     component: () => import ('../views/Post.vue')
   },
   {
+    path: '/user/:id/follower',
+    name: 'follower',
+    component: () => import('../views/Follower.vue')
+  },
+  {
     path: '/user/:id/setting',
     name: 'setting',
     component: () => import('../views/Setting.vue')
