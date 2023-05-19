@@ -50,14 +50,19 @@ const routes = [
     component: () => import('../views/User.vue')
   },
   {
-    path: '/admin',
-    name: 'admin-root',
-    component: () => import('../views/admin/AdminMain.vue')
+    path: '/admin/users',
+    name: 'admin-users',
+    component: () => import('../views/admin/AdminUsers.vue')
   },
   {
     path: '/admin/login',
     name: 'admin-login',
     component: AdminLogin
+  },
+  {
+    path: '/admin',
+    name: 'admin-root',
+    component: () => import('../views/admin/AdminMain.vue')
   },
   {
     // 若沒有找到對應 path ，都會跑來這個 route
