@@ -1,3 +1,4 @@
+node version: 14.16.0
 # simple-twitter-front-end-vue
 
 ## Project setup
