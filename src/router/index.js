@@ -4,6 +4,7 @@ import Main from '../views/Main.vue'
 import Login from '../views/Login.vue'
 import Regist from '../views/Regist.vue'
 import NotFound from '../views/NotFound.vue'
+import AdminLogin from '../views/admin/Login.vue'
 
 Vue.use(VueRouter)
 
@@ -47,6 +48,11 @@ const routes = [
     path: '/user/:id',
     name: 'user',
     component: () => import('../views/User.vue')
+  },
+  {
+    path: '/admin/login',
+    name: 'admin-login',
+    component: AdminLogin
   },
   {
     // 若沒有找到對應 path ，都會跑來這個 route

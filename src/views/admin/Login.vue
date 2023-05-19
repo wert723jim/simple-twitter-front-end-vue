@@ -2,10 +2,10 @@
   <div class="container">
     <div class="brand">
       <div class="brand__img">
-        <img src="../assets/img/logo@2x.png" alt="">
+        <img src="../../assets/img/logo@2x.png" alt="">
       </div>
       <div class="brand__title">
-        <h3>登入 Alphitter</h3>
+        <h3>後台登入</h3>
       </div>
     </div>
     <form action="" class="form" @submit.prevent.stop="handleSubmit">
@@ -44,9 +44,7 @@
       </div>
     </form>
     <div class="portal">
-      <router-link to="/regist">註冊</router-link>
-      &middot;
-      <router-link to="/admin/login">後台登入</router-link>
+      <router-link to="/login">前台登入</router-link>
     </div>
   </div>
 </template>
