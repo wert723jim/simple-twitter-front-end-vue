@@ -4,7 +4,7 @@ import Main from '../views/Main.vue'
 import Login from '../views/Login.vue'
 import Regist from '../views/Regist.vue'
 import NotFound from '../views/NotFound.vue'
-import AdminLogin from '../views/admin/Login.vue'
+import AdminLogin from '../views/admin/AdminLogin.vue'
 
 Vue.use(VueRouter)
 
@@ -48,6 +48,11 @@ const routes = [
     path: '/user/:id',
     name: 'user',
     component: () => import('../views/User.vue')
+  },
+  {
+    path: '/admin',
+    name: 'admin-root',
+    component: () => import('../views/admin/AdminMain.vue')
   },
   {
     path: '/admin/login',

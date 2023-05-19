@@ -74,6 +74,8 @@ export default {
 
 <style lang="scss" scoped>
 nav {
+  // 設定為最上層，popup modal 才不會被遮住
+  z-index: 9997;
   position: fixed;
   display: flex;
   flex-direction: column;

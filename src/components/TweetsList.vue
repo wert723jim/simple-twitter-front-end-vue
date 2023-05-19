@@ -14,6 +14,13 @@
             &middot;
             <span>3小時</span>
           </div>
+          <div class="list__post__info__user__remove">
+            <form action="">
+              <button>
+                <img src="../assets/img/icon_x_gray@2x.png" alt="">
+              </button>
+            </form>
+          </div>
         </div>
         <router-link to="/post/1" class="list__post__info__content">
           <div>
@@ -104,6 +111,7 @@ export default {
 <style lang="scss" scoped>
 .list {
   &__post {
+    position: relative;
     display: flex;
     padding: 16px 24px;
     border-bottom: 1px solid #E6ECF0;
@@ -134,10 +142,25 @@ export default {
       &__user {
         display: flex;
         margin-bottom: 10px;
+        align-items: center;
 
         &__decor {
           margin-left: 8px;
           color: $secondary;
+        }
+
+        &__remove {
+          position: absolute;
+          right: 0;
+          
+          button {
+            background: white;
+
+            img {
+              width: 24px;
+              height: 24px;
+            }
+          }
         }
       }
 
