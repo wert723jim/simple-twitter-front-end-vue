@@ -68,13 +68,13 @@
         >
       </div>
       <div class="form__group">
-        <label for="password-confirm" class="second-font">
+        <label for="checkPassword" class="second-font">
           密碼確認
         </label>
         <input
-          id="password-confirm"
-          v-model="passwordConfirm"
-          name="password-confirm"
+          id="checkPassword"
+          v-model="checkPassword"
+          name="checkPassword"
           type="password"
           placeholder="請再次輸入密碼"
           required
@@ -95,6 +95,8 @@
 </template>
 
 <script>
+import userAPI from '../apis/users'
+
 export default {
   data() {
     return {
@@ -102,20 +104,24 @@ export default {
       name: '',
       email: '',
       password: '',
-      passwordConfirm: ''
+      checkPassword: ''
     }
   },
   methods: {
-    handleSubmit () {
-      const data = JSON.stringify({
-        account: this.account,
-        name: this.name,
-        email: this.email,
-        password: this.password,
-        passwordConfirm: this.passwordConfirm
-      })
+    async handleSubmit () {
+      try {
+        const res = await userAPI.addNewUser({
+          account: this.account,
+          name: this.name,
+          email: this.email,
+          password: this.password,
+          checkPassword: this.checkPassword
+        })
 
-      console.log(data)
+        console.log(res)
+      } catch(err) {
+        console.log(err)
+      }
     }
   }
 }
