@@ -96,6 +96,7 @@
 
 <script>
 import userAPI from '../apis/users'
+import { Toast } from '../utils/helpers'
 
 export default {
   data() {
@@ -110,7 +111,7 @@ export default {
   methods: {
     async handleSubmit () {
       try {
-        const res = await userAPI.addNewUser({
+         await userAPI.addNewUser({
           account: this.account,
           name: this.name,
           email: this.email,
@@ -118,9 +119,15 @@ export default {
           checkPassword: this.checkPassword
         })
 
-        console.log(res)
+        this.$router.push({name: 'login'})
+
       } catch(err) {
-        console.log(err)
+        const { msg } = err.response.data
+        Toast.fire({
+          title: 'Error!',
+          icon: 'error',
+          text: msg
+        })
       }
     }
   }
