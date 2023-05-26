@@ -111,7 +111,7 @@ export default {
   methods: {
     async handleSubmit () {
       try {
-         await userAPI.addNewUser({
+        await userAPI.addNewUser({
           account: this.account,
           name: this.name,
           email: this.email,
@@ -119,14 +119,18 @@ export default {
           checkPassword: this.checkPassword
         })
 
+        Toast.fire({
+          icon: 'success',
+          title: '註冊成功!'
+        })
+
         this.$router.push({name: 'login'})
 
       } catch(err) {
         const { msg } = err.response.data
         Toast.fire({
-          title: 'Error!',
           icon: 'error',
-          text: msg
+          title: msg
         })
       }
     }
