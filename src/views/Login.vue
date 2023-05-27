@@ -52,6 +52,13 @@
 </template>
 
 <script>
+const dummyUser = {
+  id: 1,
+  name: 'root',
+  email: 'root@example.com',
+  account: 'root',
+  role: 'user'
+}
 import authAPI from '../apis/authorization'
 
 export default {
@@ -70,7 +77,10 @@ export default {
         })
 
         console.log('success:', data)
+        // 將使用者資訊使用 mutation 傳入 Vuex
+        this.$store.commit('setCurrentUser', dummyUser)
 
+        this.$router.push({name: 'main'})
       } catch(err) {
         console.log(err)
       }
