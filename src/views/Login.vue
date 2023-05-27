@@ -52,6 +52,8 @@
 </template>
 
 <script>
+import authAPI from '../apis/authorization'
+
 export default {
   data() {
     return {
@@ -60,13 +62,18 @@ export default {
     }
   },
   methods: {
-    handleSubmit () {
-      const data = JSON.stringify({
-        account: this.account,
-        password: this.password
-      })
+    async handleSubmit () {
+      try {
+        const data = await authAPI.login({
+          account: this.account,
+          password: this.password
+        })
 
-      console.log(data)
+        console.log('success:', data)
+
+      } catch(err) {
+        console.log(err)
+      }
     }
   }
 }
