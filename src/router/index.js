@@ -5,6 +5,8 @@ import Login from '../views/Login.vue'
 import Regist from '../views/Regist.vue'
 import NotFound from '../views/NotFound.vue'
 import AdminLogin from '../views/admin/AdminLogin.vue'
+// 引用 vuex store
+import store from '../store/index'
 
 Vue.use(VueRouter)
 
@@ -74,6 +76,12 @@ const routes = [
 
 const router = new VueRouter({
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  // 使用vuex actions
+  store.dispatch('fetchCurrentUser')
+  next()
 })
 
 export default router

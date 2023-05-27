@@ -28,6 +28,32 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    // 在 actions 中可以透過參數方式取得 commit 的方法
+    fetchCurrentUser({ commit }) {
+      // 呼叫 API 傳 accessToken 至後端驗證 accessToken 是否過期
+      // 若過期則傳 refreshToken 至後端取得新的 accessToken，順便驗證 refreshToken 是否過期
+      // 若 refreshToken 也過期，則需要重新登入
+      const refreshToken = localStorage.getItem('token')
+      console.log(refreshToken)
+      if(refreshToken) {
+        const dummyUser = {
+          id: 1,
+          name: 'root',
+          account: 'root',
+          email: 'root@example.com',
+          role: 'user'
+        }
+
+        const { id, name, account, email, role } = dummyUser
+        commit('setCurrentUser', {
+          id,
+          name,
+          account,
+          email,
+          role
+        })
+      }
+    }
   },
   modules: {
   }
