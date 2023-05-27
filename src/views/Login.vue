@@ -71,12 +71,16 @@ export default {
   methods: {
     async handleSubmit () {
       try {
-        const data = await authAPI.login({
+        // 登入成功取得 access token
+        const response = await authAPI.login({
           account: this.account,
           password: this.password
         })
 
-        console.log('success:', data)
+        console.log('response:', response)
+        // console.log('success:', data)
+        //將 access token 存入 local storage
+        // localStorage.setItem('token', data)
         // 將使用者資訊使用 mutation 傳入 Vuex
         this.$store.commit('setCurrentUser', dummyUser)
 
