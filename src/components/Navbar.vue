@@ -35,9 +35,9 @@
       </button>
     </div>
     <div class="logout">
-        <router-link to="logout">
+        <a href="" @click.stop.prevent="logout">
           <img src="../assets/img/logout@2x.png" alt="" class="logout__link">
-        </router-link>
+        </a>
     </div>
 
     <transition>
@@ -52,6 +52,9 @@
 
 <script>
 import TweetModal from '../components/TweetModal.vue'
+import authAPI from '../apis/authorization'
+import { Toast } from '../utils/helpers'
+
 export default {
   components: {
     TweetModal
@@ -67,6 +70,24 @@ export default {
     },
     closeModal() {
       this.modalShow = false
+    },
+    async logout() {
+      try {
+        console.log('登出')
+
+        await authAPI.logout()
+
+        localStorage.removeItem('token')
+        
+        Toast.fire({
+          icon: 'success',
+          title: '登出成功'
+        })
+
+        this.$router.go()
+      } catch(err) {
+        console.log(err)
+      }
     }
   }
 }
