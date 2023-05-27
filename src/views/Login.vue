@@ -52,13 +52,6 @@
 </template>
 
 <script>
-const dummyUser = {
-  id: 1,
-  name: 'root',
-  email: 'root@example.com',
-  account: 'root',
-  role: 'user'
-}
 import authAPI from '../apis/authorization'
 
 export default {
@@ -71,18 +64,15 @@ export default {
   methods: {
     async handleSubmit () {
       try {
-        // 登入成功取得 access token
-        const response = await authAPI.login({
+        // 登入成功取得 access token 和 使用者資料
+        const { data } = await authAPI.login({
           account: this.account,
           password: this.password
         })
-
-        console.log('response:', response)
-        // console.log('success:', data)
         //將 access token 存入 local storage
-        // localStorage.setItem('token', data)
+        localStorage.setItem('token', data.accessToken)
         // 將使用者資訊使用 mutation 傳入 Vuex
-        this.$store.commit('setCurrentUser', dummyUser)
+        this.$store.commit('setCurrentUser', data)
 
         this.$router.push({name: 'main'})
       } catch(err) {
