@@ -9,5 +9,9 @@ export default {
   },
   logout() {
     return apiHelper.get('/logout')
+  },
+  // 把 cookie 內的 refresh token 丟回去驗證，成功則回傳一個 access token
+  getAccessToken() {
+    return apiHelper.get('/refresh')
   }
 }
