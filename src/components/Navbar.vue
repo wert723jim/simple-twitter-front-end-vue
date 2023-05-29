@@ -77,7 +77,7 @@ export default {
 
         await authAPI.logout()
 
-        localStorage.removeItem('token')
+        this.$store.commit('revokeAuthentication')
         
         Toast.fire({
           icon: 'success',

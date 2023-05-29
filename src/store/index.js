@@ -27,11 +27,17 @@ export default new Vuex.Store({
       }
       // 將使用者登入狀態改為 true
       state.isAuthenticated = true
+    },
+    // 登出
+    revokeAuthentication(state) {
+      state.currentUser = {}
+      state.isAuthenticated = false
+      localStorage.removeItem('token')
     }
   },
   actions: {
     // 在 actions 中可以透過參數方式取得 commit 的方法
-    async fetchCurrentUser({ commit }) {
+    async fetchCurrentUser({ commit, dispatch }) {
       try {
         // 呼叫 API 傳 accessToken 至後端驗證 accessToken 是否過期
         const { data } = await userAPI.getMyInfo()
@@ -46,17 +52,16 @@ export default new Vuex.Store({
       } catch(err) {
         // console.log(err)
         // 若 access token 過期則傳 refreshToken 至後端取得新的 accessToken，順便驗證 refreshToken 是否過期
-        // 將過期的 local storage 移除
-        localStorage.removeItem('token')
-        this.dispatch('getAccessToken')
+        dispatch('getAccessToken')
       } 
     },
-    async getAccessToken() {
+    async getAccessToken({ commit }) {
       try {
         const { data } = await authAPI.getAccessToken()
         localStorage.setItem('token', data)
         this.dispatch('fetchCurrentUser')
       } catch(err) {
+        commit('revokeAuthentication')
         console.log(err)
         // 若 refreshToken 也過期，則需要重新登入，轉至登入頁
       }
