@@ -11,6 +11,15 @@ import store from '../store/index'
 
 Vue.use(VueRouter)
 
+const authorizeIsAdmin = (to, from, next) => {
+  const currentUser = store.state.currentUser
+  if(currentUser && currentUser.role !== 'admin') {
+    next('/404')
+    return
+  }
+  next()
+}
+
 const routes = [
   {
     path: '/',
@@ -55,7 +64,8 @@ const routes = [
   {
     path: '/admin/users',
     name: 'admin-users',
-    component: () => import('../views/admin/AdminUsers.vue')
+    component: () => import('../views/admin/AdminUsers.vue'),
+    beforeEnter: authorizeIsAdmin
   },
   {
     path: '/admin/login',
@@ -63,9 +73,15 @@ const routes = [
     component: AdminLogin
   },
   {
+    path: '/admin/main',
+    name: 'admin-main',
+    component: () => import('../views/admin/AdminMain'),
+    beforeEnter: authorizeIsAdmin
+  },
+  {
     path: '/admin',
-    name: 'admin-root',
-    component: () => import('../views/admin/AdminMain.vue')
+    exact: true,
+    redirect: '/admin/main'
   },
   {
     // 若沒有找到對應 path ，都會跑來這個 route
