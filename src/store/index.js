@@ -12,9 +12,10 @@ export default new Vuex.Store({
       name: '',
       email: '',
       account: '',
-      role: ''
+      role: '',
+      accessToken: ''
     },
-    isAuthenticated: false
+    isAuthenticated: false,
   },
   getters: {
   },
