@@ -73,8 +73,6 @@ export default {
     },
     async logout() {
       try {
-        console.log('登出')
-
         await authAPI.logout()
 
         this.$store.commit('revokeAuthentication')
@@ -84,7 +82,7 @@ export default {
           title: '登出成功'
         })
 
-        this.$router.go()
+        this.$router.push({name: 'login'})
       } catch(err) {
         console.log(err)
       }
