@@ -112,12 +112,12 @@ router.beforeEach(async (to, from, next) => {
   if (tokenInLocalStorage && tokenInLocalStorage !== tokenInStore) {
     // 使用vuex actions ，會回傳 true/false，來確認 access token 是否有效
     // 使用 async await 可以將 fetchCurrentUser return 的值取出
-    accessTokenValid = await store.dispatch('fetchCurrentUser')
+    accessTokenValid = await store.dispatch('getAccessToken')
   }
   // 如果 access token 無效的話
   if (!accessTokenValid) {
     // 傳送 refresh token 至後端，取得 access token 
-    accessTokenValid = await store.dispatch('getAccessToken')
+    // accessTokenValid = await store.dispatch('getAccessToken')
   }
   // 不需要 access token 之頁面
   const pathWithoutAccessToken = ['login', 'admin-login', 'regist']

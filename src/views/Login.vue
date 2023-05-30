@@ -75,6 +75,7 @@ export default {
         this.$store.commit('setCurrentUser', data)
 
         this.$router.push({name: 'main'})
+        console.log(data)
       } catch(err) {
         console.log(err)
       }
