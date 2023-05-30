@@ -64,7 +64,6 @@ export default new Vuex.Store({
         localStorage.setItem('token', data)
         // 拿到 refresh token 後，重新驗證 access token
         this.dispatch('fetchCurrentUser')
-        console.log(data)
         commit('setCurrentUser', {accessToken: data})
         return true
       } catch(err) {

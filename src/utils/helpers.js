@@ -29,7 +29,6 @@ axiosInstance.interceptors.response.use(
   },
   async err => {
     const originalConfig = err.config
-    console.log('err.response:', err.response)
     const passURL = ['/auth', '/refresh']
     if(!passURL.includes(originalConfig.url) && err.response) {
       if (err.response.status === 401 && !originalConfig._retry) {
@@ -37,7 +36,7 @@ axiosInstance.interceptors.response.use(
         try {
           const { data } = await authAPI.getAccessToken()
           localStorage.setItem('token', data)
-          
+
           return axiosInstance(originalConfig)
         } catch(err) {
           return Promise.reject(err)

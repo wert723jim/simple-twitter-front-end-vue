@@ -62,8 +62,6 @@ export default {
     async addTweet() {
       try{
         // 檢驗字數
-        // 
-        await this.$store.dispatch('getAccessToken')
         await tweetAPI.addTweet({
           description: this.description
         })
