@@ -12,17 +12,28 @@
             <img src="" alt="">
           </div>
           <div class="modal__wrapper__content__form">
-            <form action="" id="tweet">
+            <form
+              action=""
+              id="tweet"
+              @submit.stop.prevent="addTweet"
+            >
               <textarea
-                name="desciption"
+                name="description"
                 placeholder="有什麼新鮮事?"
+                v-model="description"
               >
               </textarea>
             </form>
           </div>
         </div>
         <div class="modal__wrapper__footer">
-          <button for="tweet">推文</button>
+          <button
+            for="tweet"
+            type="submit"
+            form="tweet"
+          >
+            推文
+          </button>
         </div>
       </div>
     </div>
@@ -30,15 +41,47 @@
 </template>
 
 <script>
+import tweetAPI from '../apis/tweets'
+import { Toast } from '../utils/helpers'
+
 export default {
   props: {
     modalShow: {
       type: Boolean
     }
   },
+  data() {
+    return {
+      description: ''
+    }
+  },
   methods: {
     closeModal() {
-      this.$emit('modalClose', false)
+      this.$emit('modalClose')
+    },
+    async addTweet() {
+      try{
+        // 檢驗字數
+        // 
+        await this.$store.dispatch('getAccessToken')
+        await tweetAPI.addTweet({
+          description: this.description
+        })
+        // 成功的話關閉modal
+        this.$emit('modalClose')
+
+        Toast.fire({
+          icon: 'success',
+          title: '推文成功'
+        })
+      } catch(err) {
+        const { message } = err.response.data
+        console.log(err)
+        Toast.fire({
+          icon: 'error',
+          title: message
+        })
+      }
     }
   }
 }

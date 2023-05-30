@@ -38,7 +38,7 @@ export default new Vuex.Store({
   },
   actions: {
     // 在 actions 中可以透過參數方式取得 commit 的方法
-    async fetchCurrentUser({ commit }) {
+    async fetchCurrentUser({ commit, dispatch }) {
       try {
         // 呼叫 API 傳 accessToken 至後端驗證 accessToken 是否過期
         const { data } = await userAPI.getMyInfo()
@@ -48,13 +48,13 @@ export default new Vuex.Store({
           name,
           account,
           email,
-          role,
+          role
         })
         return true
       } catch(err) {
         // console.log(err)
         // 若 access token 過期則傳 refreshToken 至後端取得新的 accessToken，順便驗證 refreshToken 是否過期
-        // dispatch('getAccessToken')
+        dispatch('getAccessToken')
         return false
       } 
     },

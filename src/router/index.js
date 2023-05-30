@@ -114,11 +114,11 @@ router.beforeEach(async (to, from, next) => {
     // 使用 async await 可以將 fetchCurrentUser return 的值取出
     accessTokenValid = await store.dispatch('getAccessToken')
   }
-  // 如果 access token 無效的話
-  if (!accessTokenValid) {
-    // 傳送 refresh token 至後端，取得 access token 
-    // accessTokenValid = await store.dispatch('getAccessToken')
-  }
+  // // 如果 access token 無效的話
+  // if (!accessTokenValid) {
+  //   // 傳送 refresh token 至後端，取得 access token 
+  //   accessTokenValid = await store.dispatch('getAccessToken')
+  // }
   // 不需要 access token 之頁面
   const pathWithoutAccessToken = ['login', 'admin-login', 'regist']
   // 若 accessTokenValid 為 false，且不是轉址到登入頁，則轉址到登入頁，若是要去登入頁則不用進入
