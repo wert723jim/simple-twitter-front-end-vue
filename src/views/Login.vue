@@ -53,6 +53,7 @@
 
 <script>
 import authAPI from '../apis/authorization'
+import { Toast } from '../utils/helpers'
 
 export default {
   data() {
@@ -74,8 +75,12 @@ export default {
         // 將使用者資訊使用 mutation 傳入 Vuex
         this.$store.commit('setCurrentUser', data)
 
+        Toast.fire({
+          icon: 'success',
+          title: '登入成功'
+        })
+
         this.$router.push({name: 'main'})
-        console.log(data)
       } catch(err) {
         console.log(err)
       }
