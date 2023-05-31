@@ -17,19 +17,20 @@
           </div>
           <div class="post__header__info">
             <div class="post__header__info__name">
-              Apple
+              {{postDetail.userId}}
             </div>
             <div class="post__header__info__account second-font">
-              @apple
+              @{{postDetail.userId}}
             </div>
           </div>
         </div>
         <div class="post__content">
           <div class="post__content__text">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quam, aspernatur! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi, aperiam.
+            {{postDetail.description}}
           </div>
           <div class="post__content__created second-font">
-            上午 10:05 &middot; 2023年5月16日
+            <!-- 上午 10:05 &middot; 2023年5月16日 -->
+            {{postDetail.createdAt}}
           </div>
         </div>
         <div class="post__count">
@@ -77,7 +78,7 @@
               </router-link>
             </div>
             <div class="list__post__info__content">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae, vitae! Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto, quaerat.
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo, assumenda?
             </div>
           </div>
         </div>
@@ -120,6 +121,7 @@
 
 <script>
 import ReplyModal from '../components/ReplyModal.vue'
+import tweetAPI from '../apis/tweets'
 
 export default {
   components: {
@@ -127,8 +129,18 @@ export default {
   },
   data() {
     return {
-      modalShow: false
+      modalShow: false,
+      postDetail: {
+        id: -1,
+        description: '',
+        createdAt: '',
+        userId: -1
+      }
     }
+  },
+  created() {
+    const {id: tweetId} = this.$route.params
+    this.fetchTweet(tweetId)
   },
   methods: {
     showModal() {
@@ -136,6 +148,24 @@ export default {
     },
     closeModal() {
       this.modalShow = false
+    },
+    async fetchTweet(tweetId) {
+      try {
+        const { data } = await tweetAPI.getTweetById(tweetId)
+
+        const { id, userId, description, createdAt } = data
+
+        this.postDetail = {
+          id,
+          userId,
+          description,
+          createdAt
+        }
+
+        console.log("res:", data)
+      } catch(err) {
+        console.log(err)
+      }
     }
   }
 }

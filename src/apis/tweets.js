@@ -12,5 +12,8 @@ export default {
   },
   getAllTweet() {
     return apiHelper.get('/tweets')
+  },
+  getTweetById(tweetId) {
+    return apiHelper.get(`/tweets/${tweetId}`)
   }
 }
