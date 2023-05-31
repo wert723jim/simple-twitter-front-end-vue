@@ -66,20 +66,26 @@
 
 <script>
 import ReplyModal from '../components/ReplyModal.vue'
-import tweetAPI from '../apis/tweets'
 
 export default {
   components: {
     ReplyModal
   },
+  props: {
+    initialTweets:{
+      type: Array,
+      require: true
+    }
+  },
   data() {
     return {
       modalShow: false,
-      tweets: []
+      // 直接將傳進來的 initialTweets 賦值給 component 的 tweets
+      tweets: this.initialTweets
     }
   },
   created() {
-    this.fetchAllTweets()
+    this.insertTweets()
   },
   methods: {
     showModal() {
@@ -87,16 +93,6 @@ export default {
     },
     closeModal() {
       this.modalShow = false
-    },
-    async fetchAllTweets() {
-      try {
-        const { data } = await tweetAPI.getAllTweet()
-        console.log(data)
-
-        this.tweets = data
-      } catch(err) {
-        console.log(err)
-      }
     }
   }
 

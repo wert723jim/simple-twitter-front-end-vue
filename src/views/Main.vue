@@ -19,7 +19,9 @@
         </div>
       </div>
 
-      <TweetsList />
+      <TweetsList
+        :initial-tweets="tweets"
+      />
     </div>
     
   </div>
@@ -27,6 +29,7 @@
 
 <script>
 import TweetsList from '../components/TweetsList.vue'
+import tweetAPI from '../apis/tweets'
 
 export default {
   components: {
@@ -34,8 +37,12 @@ export default {
   },
   data() {
     return {
-      modalShow: false
+      modalShow: false,
+      tweets: []
     }
+  },
+  created() {
+    this.fetchAllTweets()
   },
   methods: {
     showModal() {
@@ -43,6 +50,16 @@ export default {
     },
     closeModal() {
       this.modalShow = false
+    },
+    async fetchAllTweets() {
+      try {
+        const { data } = await tweetAPI.getAllTweet()
+        console.log('data:', data)
+
+        this.tweets = data
+      } catch(err) {
+        console.log(err)
+      }
     }
   }
 }
