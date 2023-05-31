@@ -9,5 +9,8 @@ export default {
     {
       headers: { Authorization: `Bearer ${getToken()}`}
     })
+  },
+  getAllTweet() {
+    return apiHelper.get('/tweets')
   }
 }

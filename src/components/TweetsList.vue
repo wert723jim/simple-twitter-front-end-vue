@@ -1,18 +1,22 @@
 <template>
   <div class="list">
-    <div class="list__post">
+    <div
+      class="list__post"
+      v-for="tweet in tweets"
+      :key="tweet.id"
+    >
       <div class="list__post__headshot">
         <img src="" alt="">
       </div>
       <div class="list__post__info">
         <div class="list__post__info__user">
           <div class="list__post__info__user__name">
-            Apple
+            {{tweet.userId}}
           </div>
           <div class="list__post__info__user__decor second-font">
-            <span>@apple</span>
+            <span>@{{tweet.userId}}</span>
             &middot;
-            <span>3小時</span>
+            <span>{{tweet.createdAt}}</span>
           </div>
           <div class="list__post__info__user__remove">
             <form action="">
@@ -22,9 +26,12 @@
             </form>
           </div>
         </div>
-        <router-link to="/post/1" class="list__post__info__content">
+        <router-link
+         class="list__post__info__content"
+         :to="{name: 'post', params: {id: tweet.id}}"
+        >
           <div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae, vitae! Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto, quaerat.
+            {{ tweet.description }}
           </div>
         </router-link>
         
@@ -44,36 +51,6 @@
         </div>
       </div>
     </div>
-    <div class="list__post">
-      <div class="list__post__headshot">
-        <img src="" alt="">
-      </div>
-      <div class="list__post__info">
-        <div class="list__post__info__user">
-          <div class="list__post__info__user__name">
-            Apple
-          </div>
-          <div class="list__post__info__user__decor second-font">
-            <span>@apple</span>
-            &middot;
-            <span>3小時</span>
-          </div>
-        </div>
-        <div class="list__post__info__content">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae, vitae! Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto, quaerat.
-        </div>
-        <div class="list__post__info__box second-font">
-          <div class="list__post__info__box__replies">
-            <img src="../assets/img/icon_reply@2x.png" alt="">
-            <span>13</span>
-          </div>
-          <div class="list__post__info__box__likes">
-            <img src="../assets/img/icon_like@2x.png" alt="">
-            <span>76</span>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <transition>
       <ReplyModal
@@ -86,6 +63,7 @@
 
 <script>
 import ReplyModal from '../components/ReplyModal.vue'
+import tweetAPI from '../apis/tweets'
 
 export default {
   components: {
@@ -93,8 +71,12 @@ export default {
   },
   data() {
     return {
-      modalShow: false
+      modalShow: false,
+      tweets: []
     }
+  },
+  created() {
+    this.fetchAllTweets()
   },
   methods: {
     showModal() {
@@ -102,6 +84,16 @@ export default {
     },
     closeModal() {
       this.modalShow = false
+    },
+    async fetchAllTweets() {
+      try {
+        const { data } = await tweetAPI.getAllTweet()
+        console.log(data)
+
+        this.tweets = data
+      } catch(err) {
+        console.log(err)
+      }
     }
   }
 
