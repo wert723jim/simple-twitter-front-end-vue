@@ -20,9 +20,35 @@
             <img src="" alt="">
           </div>
         </div>
+        <!-- 若登入者 id 和 個人頁面 id 相同  -->
+        <div
+          v-if="userProfile.id === currentUser.id"
+          class="info__btn"
+        >
+          <button
+            class="info__btn__edit"
+            @click.stop.prevent="showModal"
+          >
+          編輯個人資料
+          </button>
+        </div>
 
-        <div class="info__btn">
-          <button @click.stop.prevent="showModal">編輯個人資料</button>
+        <div
+          v-else
+          class="info__btn"
+        >
+          <a href="#" class="info__btn__msg">
+            <img src="../assets/img/btn_msg@2x.png" alt="">
+          </a>
+          <a href="#" class="info__btn__notfi">
+            <img src="../assets/img/btn_notfi@2x.png" alt="">
+          </a>
+          <button
+            class="info__btn__follow"
+            @click.stop.prevent="showModal"
+          >
+          追蹤
+          </button>
         </div>
 
         <div class="info__text">
@@ -65,6 +91,7 @@ import EditUserModal from '../components/EditUserModal.vue'
 import TweetsList from '../components/TweetsList.vue'
 import Tabs from '../components/Tabs.vue'
 import userAPI from '../apis/users'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -88,6 +115,9 @@ export default {
   created() {
     const { id: userId } = this.$route.params
     this.fetchProfile(userId)
+  },
+  computed: {
+    ...mapState(['currentUser'])
   },
   methods: {
     showModal() {
@@ -188,11 +218,33 @@ export default {
 
   &__btn {
     // position: relative;
+    display: flex;
     margin-bottom: 16px;
     padding-right:16px;
-    text-align: right;
-    button {
+    justify-content: end;
+    gap: 16px;
+
+    a {
+      width: 40px;
+      height: 40px;
+
+      img {
+        height: 100%;
+        width: 100%;
+      }
+    }
+
+    &__edit {
       width: 128px;
+      height: 40px;
+      color: $brand-color;
+      border: 1px solid $brand-color;
+      background: white;
+      border-radius: 50px;
+    }
+
+    &__follow {
+      width: 64px;
       height: 40px;
       color: $brand-color;
       border: 1px solid $brand-color;
