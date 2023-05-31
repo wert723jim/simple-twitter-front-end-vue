@@ -119,6 +119,12 @@ export default {
   computed: {
     ...mapState(['currentUser'])
   },
+  // 只要 route 變動就執行，避免 route 將 user/:id 都視為同一個路由
+  beforeRouteUpdate(to, from, next) {
+    const {id: userId} = to.params
+    this.fetchProfile(userId)
+    next()
+  },
   methods: {
     showModal() {
       this.modalShow = true
@@ -151,6 +157,7 @@ export default {
 
 <style lang="scss" scoped>
 .container {
+  width: 100%;
   height: 100%;
   padding-left: 202px;
   padding-right: 24px;

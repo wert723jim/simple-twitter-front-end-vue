@@ -11,7 +11,10 @@
       <div class="list__post__info">
         <div class="list__post__info__user">
           <div class="list__post__info__user__name">
-            {{tweet.userId}}
+            <router-link :to="{name: 'user', params: {id: tweet.userId}}">
+              {{tweet.userId}}
+            </router-link>
+            
           </div>
           <div class="list__post__info__user__decor second-font">
             <span>@{{tweet.userId}}</span>
@@ -135,6 +138,12 @@ export default {
         display: flex;
         margin-bottom: 10px;
         align-items: center;
+
+        &__name {
+          a {
+            text-decoration: none;
+          }
+        }
 
         &__decor {
           margin-left: 8px;
