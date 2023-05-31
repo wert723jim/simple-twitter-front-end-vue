@@ -82,7 +82,12 @@ export default {
 
         this.$router.push({name: 'main'})
       } catch(err) {
-        console.log(err)
+        const { data } = err.response
+
+        Toast.fire({
+          icon: 'error',
+          title: data.message
+        })
       }
     }
   }

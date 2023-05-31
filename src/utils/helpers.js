@@ -41,9 +41,10 @@ axiosInstance.interceptors.response.use(
         } catch(err) {
           return Promise.reject(err)
         }
-        
       }
     }
+    // 回傳原本的錯誤訊息
+    return Promise.reject(err)
   }
 )
 
