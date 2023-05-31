@@ -14,7 +14,7 @@
         </router-link>
       </div>
       <div class="list__group">
-        <router-link to="/user/1" class="list__group__link">
+        <router-link :to="{name: 'user', params: {id: currentUser.id}}" class="list__group__link">
           <img src="../assets/img/profile@2x.png" alt="" class="list__group__link__img">
           <img src="../assets/img/profile-c@2x.png" alt="" class="list__group__link__img--active">
           <!-- <span class="list__group__link__text">個人資料</span> -->
@@ -54,6 +54,7 @@
 import TweetModal from '../components/TweetModal.vue'
 import authAPI from '../apis/authorization'
 import { Toast } from '../utils/helpers'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -63,6 +64,9 @@ export default {
     return {
       modalShow: false
     }
+  },
+  computed: {
+    ...mapState(['currentUser'])
   },
   methods: {
     showModal() {

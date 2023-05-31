@@ -6,7 +6,7 @@
           <img src="../assets/img/icon_back@2x.png" alt="" class="title__back__img">
         </a>
         <div class="title__content">
-          <h5>John Doe</h5>
+          <h5>{{userProfile.name}}</h5>
           <div class="title__content__count second-font">25 推文</div>
         </div>
       </div>
@@ -27,11 +27,11 @@
 
         <div class="info__text">
           <div class="info__text__heading">
-            <h5>John Doe</h5>
-            <div class="info__text__heading__account second-font">@heyjohn</div>
+            <h5>{{userProfile.name}}</h5>
+            <div class="info__text__heading__account second-font">@{{userProfile.account}}</div>
           </div>
           <div class="info__text__intro">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit, fugiat?
+            {{userProfile.introduction}}
           </div>
           <router-link to="/user/1/follower">
             <div class="info__text__followship">
@@ -64,6 +64,7 @@
 import EditUserModal from '../components/EditUserModal.vue'
 import TweetsList from '../components/TweetsList.vue'
 import Tabs from '../components/Tabs.vue'
+import userAPI from '../apis/users'
 
 export default {
   components: {
@@ -73,8 +74,20 @@ export default {
   },
   data() {
     return {
-      modalShow: false
+      modalShow: false,
+      userProfile: {
+        id: -1,
+        name: '',
+        account: '',
+        email: '',
+        introduction: '',
+        avatar: '',
+      }
     }
+  },
+  created() {
+    const { id: userId } = this.$route.params
+    this.fetchProfile(userId)
   },
   methods: {
     showModal() {
@@ -82,6 +95,25 @@ export default {
     },
     closeModal() {
       this.modalShow = false
+    },
+    async fetchProfile(userId) {
+      try {
+        const { data } = await userAPI.getUserById(userId)
+
+        const { id, name, account, email, introduction, avatar } = data
+
+        this.userProfile = {
+          id,
+          name,
+          account,
+          email,
+          introduction,
+          avatar
+        }
+
+      } catch(err) {
+        console.log(err)
+      }
     }
   }
 }

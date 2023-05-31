@@ -16,5 +16,8 @@ export default {
     return apiHelper.get('/myInfo', {
       headers: { Authorization: `Bearer ${getToken()}`}
     })
+  },
+  getUserById(userId) {
+    return apiHelper.get(`/users/${userId}`)
   }
 }
