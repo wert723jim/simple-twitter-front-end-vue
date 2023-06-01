@@ -74,7 +74,7 @@ export default {
   props: {
     initialTweets:{
       type: Array,
-      require: true
+      required: true
     }
   },
   data() {
@@ -84,8 +84,14 @@ export default {
       tweets: this.initialTweets
     }
   },
-  created() {
-    this.insertTweets()
+  // 避免因時間差，而在渲染後才取得資料
+  // 當有資料進來後，將資料重新填入
+  watch: {
+    initialTweets(newValue) {
+      this.tweets = {
+        ...newValue
+      }
+    }
   },
   methods: {
     showModal() {

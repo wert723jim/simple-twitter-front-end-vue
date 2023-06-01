@@ -75,7 +75,9 @@
 
       <Tabs :tabs="['推文', '回覆', '喜歡的內容']"/>
 
-      <TweetsList />
+      <TweetsList 
+        :initial-tweets="tweets"
+      />
     </div>
     <transition>
       <EditUserModal
@@ -91,6 +93,7 @@ import EditUserModal from '../components/EditUserModal.vue'
 import TweetsList from '../components/TweetsList.vue'
 import Tabs from '../components/Tabs.vue'
 import userAPI from '../apis/users'
+import tweetAPI from '../apis/tweets'
 import { mapState } from 'vuex'
 
 export default {
@@ -109,15 +112,23 @@ export default {
         email: '',
         introduction: '',
         avatar: '',
-      }
+      },
+      tweets: []
     }
   },
   created() {
     const { id: userId } = this.$route.params
     this.fetchProfile(userId)
+    this.fetchAllTweets()
   },
   computed: {
-    ...mapState(['currentUser'])
+    ...mapState(['currentUser']),
+    // filterTweetsByUserId() {
+    //   const { id: userId } = this.$route.params
+    //   console.log('userId:', userId)
+    //   console.log(this.tweets.filter(tweet => tweet.userId === userId ))
+    //   return this.tweets.filter(tweet => tweet.userId === userId )
+    // }
   },
   // 只要 route 變動就執行，避免 route 將 user/:id 都視為同一個路由
   beforeRouteUpdate(to, from, next) {
@@ -147,6 +158,16 @@ export default {
           avatar
         }
 
+      } catch(err) {
+        console.log(err)
+      }
+    },
+    async fetchAllTweets() {
+      try {
+        const { data } = await tweetAPI.getAllTweet()
+        console.log('data:', data)
+
+        this.tweets = data
       } catch(err) {
         console.log(err)
       }
