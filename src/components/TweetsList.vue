@@ -11,15 +11,15 @@
       <div class="list__post__info">
         <div class="list__post__info__user">
           <div class="list__post__info__user__name">
-            <router-link :to="{name: 'user', params: {id: tweet.userId}}">
-              {{tweet.userId}}
+            <router-link :to="{name: 'user', params: {id: tweet.User.id}}">
+              {{tweet.User.name}}
             </router-link>
             
           </div>
           <div class="list__post__info__user__decor second-font">
-            <span>@{{tweet.userId}}</span>
+            <span>@{{tweet.User.account}}</span>
             &middot;
-            <span>{{tweet.createdAt}}</span>
+            <span>{{tweet.User.createdAt}}</span>
           </div>
           <div class="list__post__info__user__remove">
             <form action="">
