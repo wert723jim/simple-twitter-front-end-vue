@@ -17,10 +17,10 @@
           </div>
           <div class="post__header__info">
             <div class="post__header__info__name">
-              {{postDetail.userId}}
+              {{postDetail.User.name}}
             </div>
             <div class="post__header__info__account second-font">
-              @{{postDetail.userId}}
+              @{{postDetail.User.account}}
             </div>
           </div>
         </div>
@@ -130,12 +130,7 @@ export default {
   data() {
     return {
       modalShow: false,
-      postDetail: {
-        id: -1,
-        description: '',
-        createdAt: '',
-        userId: -1
-      }
+      postDetail: {}
     }
   },
   created() {
@@ -153,14 +148,7 @@ export default {
       try {
         const { data } = await tweetAPI.getTweetById(tweetId)
 
-        const { id, userId, description, createdAt } = data
-
-        this.postDetail = {
-          id,
-          userId,
-          description,
-          createdAt
-        }
+        this.postDetail = data
 
         console.log("res:", data)
       } catch(err) {
