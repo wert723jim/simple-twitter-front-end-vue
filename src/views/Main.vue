@@ -6,17 +6,19 @@
       </div>
 
       <div class="tweet">
-        <div class="tweet__info">
-          <div class="tweet__info__headshot">
-            <img src="" alt="">
+        <form action="" @submit.prevent.stop="addTweet">
+          <div class="tweet__info">
+            <div class="tweet__info__headshot">
+              <img src="" alt="">
+            </div>
+            <div class="tweet__info__content">
+              <textarea  placeholder="有什麼新鮮事?" v-model="description"></textarea>
+            </div>
           </div>
-          <div class="tweet__info__content">
-            <input type="textarea" placeholder="有什麼新鮮事?">
+          <div class="tweet__btn">
+            <button type="submit">推文</button>
           </div>
-        </div>
-        <div class="tweet__btn">
-          <button>推文</button>
-        </div>
+        </form>
       </div>
 
       <TweetsList
@@ -30,6 +32,7 @@
 <script>
 import TweetsList from '../components/TweetsList.vue'
 import tweetAPI from '../apis/tweets'
+import { Toast } from '../utils/helpers'
 
 export default {
   components: {
@@ -38,7 +41,8 @@ export default {
   data() {
     return {
       modalShow: false,
-      tweets: []
+      tweets: [],
+      description: ''
     }
   },
   created() {
@@ -59,6 +63,30 @@ export default {
         this.tweets = data
       } catch(err) {
         console.log(err)
+      }
+    },
+    async addTweet() {
+      try{
+        // 檢驗字數
+        await tweetAPI.addTweet({
+          description: this.description
+        })
+
+        this.fetchAllTweets()
+
+        this.description = ''
+
+        Toast.fire({
+          icon: 'success',
+          title: '推文成功'
+        })
+      } catch(err) {
+        const { message } = err.response.data
+        console.log(err)
+        Toast.fire({
+          icon: 'error',
+          title: message
+        })
       }
     }
   }
@@ -113,7 +141,10 @@ export default {
       padding-left: 8px;
       // width: 100%;
 
-      input {
+      textarea {
+        border: none;
+        outline: none;
+        resize: none;
         width: 100%;
         ::placeholder {
           color: $secondary;
