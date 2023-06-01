@@ -42,7 +42,7 @@
           <a
             href="#"
             class="list__post__info__box__replies"
-            @click.stop.prevent="showModal"
+            @click.stop.prevent="showModal(tweet.id)"
           >
             <img src="../assets/img/icon_reply@2x.png" alt="">
             <span>13</span>
@@ -59,6 +59,7 @@
       <ReplyModal
         v-if="modalShow"
         @modalClose="closeModal"
+        :initial-reply-tweet-id="replyTweetId"
       />
     </transition>
   </div>
@@ -84,7 +85,8 @@ export default {
     return {
       modalShow: false,
       // 直接將傳進來的 initialTweets 賦值給 component 的 tweets
-      tweets: this.initialTweets
+      tweets: this.initialTweets,
+      replyTweetId: -1
     }
   },
   // 避免因時間差，而在渲染後才取得資料
@@ -100,8 +102,9 @@ export default {
     ...mapState(['currentUser'])
   },
   methods: {
-    showModal() {
+    showModal(tweetId) {
       this.modalShow = true
+      this.replyTweetId = tweetId
     },
     closeModal() {
       this.modalShow = false

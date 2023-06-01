@@ -9,26 +9,26 @@
         </div>
         <div class="modal__wrapper__post">
           <div class="modal__wrapper__post__headshot">
-            <img src="" alt="">
+            <img :src="tweet.User.avatar" alt="">
             <!-- verticle line -->
           </div>
           <div class="modal__wrapper__post__detail">
             <div class="modal__wrapper__post__detail__heading">
               <div class="modal__wrapper__post__detail__heading__name">
-                Apple
+                {{tweet.User.name}}
               </div>
               <div class="modal__wrapper__post__detail__heading__info second-font">
-                <span>@apple</span>
+                <span>@{{tweet.User.account}}</span>
                 &middot;
-                <span>3 小時</span>
+                <span>{{tweet.createdAt}}</span>
               </div>
             </div>
             <div class="modal__wrapper__post__detail__description">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Optio, at Lorem, ipsum dolor sit amet consectetur adipisicing elit. Rem, explicabo.
+              {{tweet.description}}
             </div>
             <div class="modal__wrapper__post__detail__replyto second-font">
               <span>回覆給</span>
-              <router-link to="#">@apple</router-link>
+              <router-link to="#">@{{tweet.User.account}}</router-link>
             </div>
           </div>
         </div>
@@ -55,15 +55,38 @@
 </template>
 
 <script>
+import tweetAPI from '../apis/tweets'
 export default {
   props: {
     modalShow: {
       type: Boolean
+    },
+    initialReplyTweetId: {
+      type: Number
     }
+  },
+  data() {
+    return {
+      tweet: {
+        User:{}
+      }
+    }
+  },
+  created() {
+    this.fetchTweetById()
   },
   methods: {
     closeModal() {
       this.$emit('modalClose')
+    },
+    async fetchTweetById() {
+      try {
+        const {data} = await tweetAPI.getTweetById(this.initialReplyTweetId)
+
+        this.tweet = data
+      } catch(err) {
+        console.log(err)
+      }
     }
   }
 }
