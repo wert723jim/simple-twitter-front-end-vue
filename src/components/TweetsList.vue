@@ -6,7 +6,7 @@
       :key="tweet.id"
     >
       <div class="list__post__headshot">
-        <img src="" alt="">
+        <img :src="tweet.User.avatar | emptyImage" alt="">
       </div>
       <div class="list__post__info">
         <div class="list__post__info__user">
@@ -19,7 +19,7 @@
           <div class="list__post__info__user__decor second-font">
             <span>@{{tweet.User.account}}</span>
             &middot;
-            <span>{{tweet.User.createdAt}}</span>
+            <span>{{tweet.createdAt | fromNow}}</span>
           </div>
           <div class="list__post__info__user__remove">
             <form action="">
@@ -66,8 +66,10 @@
 
 <script>
 import ReplyModal from '../components/ReplyModal.vue'
+import {fromNowFilter, emptyImageFilter} from '../utils/mixins'
 
 export default {
+  mixins: [fromNowFilter, emptyImageFilter],
   components: {
     ReplyModal
   },
