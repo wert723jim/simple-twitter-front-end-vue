@@ -21,7 +21,7 @@
             &middot;
             <span>{{tweet.createdAt | fromNow}}</span>
           </div>
-          <div class="list__post__info__user__remove">
+          <div class="list__post__info__user__remove" v-if="currentUser.role === 'admin'">
             <form action="">
               <button>
                 <img src="../assets/img/icon_x_gray@2x.png" alt="">
@@ -67,6 +67,7 @@
 <script>
 import ReplyModal from '../components/ReplyModal.vue'
 import {fromNowFilter, emptyImageFilter} from '../utils/mixins'
+import { mapState } from 'vuex'
 
 export default {
   mixins: [fromNowFilter, emptyImageFilter],
@@ -94,6 +95,9 @@ export default {
         ...newValue
       }
     }
+  },
+  computed: {
+    ...mapState(['currentUser'])
   },
   methods: {
     showModal() {
