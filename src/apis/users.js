@@ -19,5 +19,10 @@ export default {
   },
   getUserById(userId) {
     return apiHelper.get(`/users/${userId}`)
+  },
+  updateUserById(userId, {...setting}) {
+    return apiHelper.put(`/users/${userId}`, {
+      ...setting
+    })
   }
 }

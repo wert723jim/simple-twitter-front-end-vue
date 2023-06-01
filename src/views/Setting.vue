@@ -65,13 +65,13 @@
         >
       </div>
       <div class="form__group">
-        <label for="password-confirm" class="second-font">
+        <label for="checkPassword" class="second-font">
           密碼確認
         </label>
         <input
-          id="password-confirm"
-          v-model="passwordConfirm"
-          name="password-confirm"
+          id="checkPassword"
+          v-model="checkPassword"
+          name="checkPassword"
           type="password"
           placeholder="請再次輸入密碼"
           required
@@ -91,9 +91,67 @@
 </template>
 
 <script>
+import userAPI from '../apis/users'
+import { Toast } from '../utils/helpers'
 
 export default {
- 
+  data() {
+    return {
+      account: '',
+      name: '',
+      email: '',
+      password: '',
+      checkPassword: ''
+    }
+  },
+  created() {
+    this.fetchProfile()
+  },
+  methods: {
+    async handleSubmit() {
+      try {
+
+        const {id: userId} = this.$route.params
+        if (this.password !== this.checkPassword) throw new Error('密碼確認錯誤')
+
+        await userAPI.updateUserById(userId, {
+          account: this.account,
+          name: this.name,
+          email: this.email
+        })
+
+        Toast.fire({
+          icon: 'success',
+          title: '更改成功'
+        })
+
+        this.router.push({name: 'user', params: {
+          id: userId
+        }})
+      } catch(err) {
+        console.log(err)
+        const { data } = err.response
+        Toast.fire({
+          icon: 'error',
+          title: data.message
+        })
+      }
+    },
+    async fetchProfile() {
+      try {
+        const {id: userId} = this.$route.params
+        const { data } = await userAPI.getUserById(userId)
+        const { account, name, email } = data
+
+        this.account = account
+        this.name = name
+        this.email = email
+
+      } catch(err) {
+        console.log(err)
+      }
+    }
+  }
 }
 </script>
 
