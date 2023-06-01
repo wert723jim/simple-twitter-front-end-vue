@@ -8,11 +8,11 @@
           </a>
           <h5 class="modal__wrapper__header__title">編輯個人資料</h5>
           <div class="modal__wrapper__header__btn">
-            <button>儲存</button>
+            <button form="form" type="submit">儲存</button>
           </div>
         </div>
         <div class="modal__wrapper__form">
-          <form action="">
+          <form action="" id="form" @submit.prevent.stop="handleSubmit">
             <div class="modal__wrapper__form__top">
               <div class="modal__wrapper__form__top__cover">
                 <img src="" alt="" class="modal__wrapper__form__top__cover__img">
@@ -24,23 +24,34 @@
                 </div>
               </div>
               <div class="modal__wrapper__form__top__headshot">
-                <div class="wrapper">
-                  <img src="" alt="" class="modal__wrapper__form__top__headshot__img">
-                  <div class="mask">
-                    <img src="../assets/img/icon_camera@2x.png" alt="" class="icon_camera">
+                <label for="headshot">
+                  <div class="wrapper">
+                    <img :src="userProfile.avatar" alt="" class="modal__wrapper__form__top__headshot__img">
+                    <div class="mask">
+                      <img src="../assets/img/icon_camera@2x.png" alt="" class="icon_camera">
+                    </div>
                   </div>
-                </div>
+                </label>
+                <input
+                  type="file"
+                  name="file"
+                  ref="file"
+                  id="headshot"
+                  accept="image/*"
+                  @change="handleFileChange"
+                >
               </div>
             </div>
             <div class="modal__wrapper__form__bottom">
               <div class="modal__wrapper__form__bottom__group">
                 <label for="" class="second-font">名稱</label>
-                <input type="text" value="John Doe">
+                <input type="text" v-model="userProfile.name">
               </div>
               <div class="name_count">8/50</div>
               <div class="modal__wrapper__form__bottom__group">
                 <label for="" class="second-font">自我介紹</label>
-                <textarea type="text" value="Jogn Doe"></textarea>
+                <textarea type="text" v-model="userProfile.introduction">
+                </textarea>
               </div>
               <div class="description_count">0/160</div>
             </div>
@@ -53,9 +64,39 @@
 
 <script>
 export default {
+  props: {
+    initialUser: {
+      type: Object
+    }
+  },
+  data() {
+    return {
+      file: '',
+      userProfile: this.initialUser
+    }
+  },
   methods: {
     closeModal() {
       this.$emit('modalClose', false)
+    },
+    handleFileChange(e) {
+      // console.log(this.$refs.file.files[0])
+      this.file = this.$refs.file.files[0]
+      console.log(this.file)
+      const { files } = e.target
+      if (files.length === 0) {
+        return
+      } else {
+        const imageURL = window.URL.createObjectURL(files[0])
+        this.userProfile.avatar = imageURL
+      }
+    },
+    async handleSubmit() {
+      try {
+        console.log(this.file)
+      } catch(err) {
+        console.log(err)
+      }
     }
   }
 }
@@ -159,7 +200,10 @@ export default {
           width: 140px;
           border-radius: 140px;
           border: 4px solid white;
-          background: yellow;
+          background-color: white;
+          input {
+            display: none;
+          }
 
           &:hover .mask {
             display: flex;
@@ -169,6 +213,12 @@ export default {
             position: relative;
             height: 100%;
             width: 100%
+          }
+
+          &__img {
+            width: 100%;
+            height: 100%;
+            border-radius: 100%;
           }
 
           .mask {

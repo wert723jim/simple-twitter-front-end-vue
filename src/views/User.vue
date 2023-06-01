@@ -83,6 +83,7 @@
       <EditUserModal
         v-if="modalShow"
         @modalClose="closeModal"
+        :initial-user="userProfile"
       />
     </transition>
   </div>
