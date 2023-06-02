@@ -63,6 +63,10 @@
 </template>
 
 <script>
+import imgurAPI from '../apis/imgur'
+import userAPI from '../apis/users'
+import { Toast } from '../utils/helpers'
+
 export default {
   props: {
     initialUser: {
@@ -81,8 +85,7 @@ export default {
     },
     handleFileChange(e) {
       // console.log(this.$refs.file.files[0])
-      this.file = this.$refs.file.files[0]
-      console.log(this.file)
+      // this.file = this.$refs.file.files[0]
       const { files } = e.target
       if (files.length === 0) {
         return
@@ -91,9 +94,29 @@ export default {
         this.userProfile.avatar = imageURL
       }
     },
-    async handleSubmit() {
+    async handleSubmit(e) {
       try {
-        console.log(this.file)
+        const formData = new FormData()
+        formData.append('image', e.target.file.files[0])
+
+        const { data } = await imgurAPI.uploadImage(formData)
+
+        const { link } = data.data
+        
+        if(!link) {
+          console.log('失敗')
+        }
+
+        await userAPI.updateUserById(this.userProfile.id, {
+          name: this.userProfile.name,
+          introduction: this.userProfile.introduction,
+          avatar: link
+        })
+
+        Toast.fire({
+          icon: 'success',
+          title: '個人資料更改成功'
+        })
       } catch(err) {
         console.log(err)
       }

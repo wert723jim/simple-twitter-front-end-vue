@@ -17,7 +17,7 @@
             <img src="" alt="">
           </div>
           <div class="info__top__headshot">
-            <img src="" alt="">
+            <img :src="userProfile.avatar" alt="">
           </div>
         </div>
         <!-- 若登入者 id 和 個人頁面 id 相同  -->
@@ -239,6 +239,12 @@ export default {
       border-radius: 140px;
       background: blue;
       border: 4px solid #FFFFFF;
+
+      img {
+        width: 100%;
+        height: 100%;
+        border-radius: 100%;
+      }
     }
   }
 
