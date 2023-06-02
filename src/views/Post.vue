@@ -130,7 +130,9 @@ export default {
   data() {
     return {
       modalShow: false,
-      postDetail: {}
+      postDetail: {
+        User:{}
+      }
     }
   },
   created() {
@@ -149,8 +151,6 @@ export default {
         const { data } = await tweetAPI.getTweetById(tweetId)
 
         this.postDetail = data
-
-        console.log("res:", data)
       } catch(err) {
         console.log(err)
       }
