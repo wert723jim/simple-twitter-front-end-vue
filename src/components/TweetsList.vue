@@ -11,7 +11,7 @@
       <div class="list__post__info">
         <div class="list__post__info__user">
           <div class="list__post__info__user__name">
-            <router-link :to="{name: 'user', params: {id: tweet.User.id}}">
+            <router-link :to="{name: 'user', params: {id: tweet.UserId}}">
               {{tweet.User.name}}
             </router-link>
             
