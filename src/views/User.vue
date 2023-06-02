@@ -7,7 +7,7 @@
         </a>
         <div class="title__content">
           <h5>{{userProfile.name}}</h5>
-          <div class="title__content__count second-font">25 推文</div>
+          <div class="title__content__count second-font">{{filterTweetsByUserId.length}} 推文</div>
         </div>
       </div>
 
