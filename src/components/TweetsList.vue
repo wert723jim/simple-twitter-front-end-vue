@@ -45,11 +45,11 @@
             @click.stop.prevent="showModal(tweet.id)"
           >
             <img src="../assets/img/icon_reply@2x.png" alt="">
-            <span>13</span>
+            <span>{{ tweet.replyCount }}</span>
           </a>
           <div class="list__post__info__box__likes">
             <img src="../assets/img/icon_like@2x.png" alt="">
-            <span>76</span>
+            <span>{{ tweet.likeCount }}</span>
           </div>
         </div>
       </div>

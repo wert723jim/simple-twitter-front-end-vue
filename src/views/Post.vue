@@ -35,10 +35,10 @@
         </div>
         <div class="post__count">
           <div class="post__count__replies">
-            34 <span>回覆</span>
+            {{postDetail.Replies.length}} <span>回覆</span>
           </div>
           <div class="post__count__likes">
-            808 <span>喜歡次數</span>
+            {{postDetail.likeCount}} <span>喜歡次數</span>
           </div>
         </div>
         <div class="post__btn">
