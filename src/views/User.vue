@@ -76,7 +76,7 @@
       <Tabs :tabs="['推文', '回覆', '喜歡的內容']"/>
 
       <TweetsList 
-        :initial-tweets="tweets"
+        :initial-tweets="filterTweetsByUserId"
       />
     </div>
     <transition>
@@ -124,12 +124,10 @@ export default {
   },
   computed: {
     ...mapState(['currentUser']),
-    // filterTweetsByUserId() {
-    //   const { id: userId } = this.$route.params
-    //   console.log('userId:', userId)
-    //   console.log(this.tweets.filter(tweet => tweet.userId === userId ))
-    //   return this.tweets.filter(tweet => tweet.userId === userId )
-    // }
+    // 根據 userId 變動來 filter 推文
+    filterTweetsByUserId() {
+      return this.tweets.filter(tweet => tweet.UserId === this.userProfile.id )
+    }
   },
   // 只要 route 變動就執行，避免 route 將 user/:id 都視為同一個路由
   beforeRouteUpdate(to, from, next) {
@@ -166,7 +164,6 @@ export default {
     async fetchAllTweets() {
       try {
         const { data } = await tweetAPI.getAllTweet()
-        console.log('data:', data)
 
         this.tweets = data
       } catch(err) {
