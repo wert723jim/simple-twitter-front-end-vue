@@ -20,7 +20,7 @@
               <div class="modal__wrapper__post__detail__heading__info second-font">
                 <span>@{{tweet.User.account}}</span>
                 &middot;
-                <span>{{tweet.createdAt}}</span>
+                <span>{{tweet.createdAt | fromNow}}</span>
               </div>
             </div>
             <div class="modal__wrapper__post__detail__description">
@@ -37,17 +37,18 @@
             <img src="" alt="">
           </div>
           <div class="modal__wrapper__content__form">
-            <form action="" id="tweet">
+            <form action="" id="comment" @submit.stop.prevent="handleSubmit">
               <textarea
-                name="desciption"
+                name="comment"
                 placeholder="有什麼新鮮事?"
+                v-model="comment"
               >
               </textarea>
             </form>
           </div>
         </div>
         <div class="modal__wrapper__footer">
-          <button for="tweet">回覆</button>
+          <button form="comment" type="submit">回覆</button>
         </div>
       </div>
     </div>
@@ -56,11 +57,11 @@
 
 <script>
 import tweetAPI from '../apis/tweets'
+import { mapState } from 'vuex'
+import { fromNowFilter } from '../utils/mixins'
 export default {
+  mixins: [fromNowFilter],
   props: {
-    modalShow: {
-      type: Boolean
-    },
     initialReplyTweetId: {
       type: Number
     }
@@ -69,15 +70,19 @@ export default {
     return {
       tweet: {
         User:{}
-      }
+      },
+      comment: ''
     }
   },
   created() {
     this.fetchTweetById()
   },
+  computed: {
+    ...mapState(['currentUser'])
+  },
   methods: {
     closeModal() {
-      this.$emit('modalClose')
+      this.$emit('modal-close')
     },
     async fetchTweetById() {
       try {
@@ -87,6 +92,10 @@ export default {
       } catch(err) {
         console.log(err)
       }
+    },
+    handleSubmit() {
+      console.log(this.comment)
+      this.$emit('after-submit', this.comment)
     }
   }
 }

@@ -58,8 +58,9 @@
     <transition>
       <ReplyModal
         v-if="modalShow"
-        @modalClose="closeModal"
+        @modal-close="closeModal"
         :initial-reply-tweet-id="replyTweetId"
+        @after-submit="handleAfterSubmit"
       />
     </transition>
   </div>
@@ -69,6 +70,8 @@
 import ReplyModal from '../components/ReplyModal.vue'
 import {fromNowFilter, emptyImageFilter} from '../utils/mixins'
 import { mapState } from 'vuex'
+import tweetAPI from '../apis/tweets'
+import { Toast } from '../utils/helpers'
 
 export default {
   mixins: [fromNowFilter, emptyImageFilter],
@@ -108,9 +111,23 @@ export default {
     },
     closeModal() {
       this.modalShow = false
+    },
+    async handleAfterSubmit(comment) {
+      try {
+        console.log('tweetslist comment:', comment)
+        console.log('tweetId:', this.replyTweetId)
+        const tweetId = this.replyTweetId
+        await tweetAPI.addReply(tweetId, comment)
+        this.modalShow = false
+        Toast.fire({
+          icon: 'success',
+          title: '回覆成功'
+        })
+      } catch(err) {
+        console.log(err)
+      }
     }
   }
-
 }
 </script>
 

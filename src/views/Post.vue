@@ -113,7 +113,9 @@
     <transition>
       <ReplyModal 
         v-if="modalShow"
-        @modalClose="closeModal"
+        @modal-close="closeModal"
+        :initial-reply-tweet-id="this.postDetail.id"
+        @after-submit="handleAfterSubmit"
       />
     </transition>
   </div>
@@ -122,6 +124,7 @@
 <script>
 import ReplyModal from '../components/ReplyModal.vue'
 import tweetAPI from '../apis/tweets'
+import { Toast } from '../utils/helpers'
 
 export default {
   components: {
@@ -151,6 +154,21 @@ export default {
         const { data } = await tweetAPI.getTweetById(tweetId)
 
         this.postDetail = data
+      } catch(err) {
+        console.log(err)
+      }
+    },
+    async handleAfterSubmit(comment) {
+      try {
+        console.log('tweetslist comment:', comment)
+        console.log('tweetId:', this.postDetail.id)
+        const tweetId = this.postDetail.id
+        await tweetAPI.addReply(tweetId, comment)
+        this.modalShow = false
+        Toast.fire({
+          icon: 'success',
+          title: '回覆成功'
+        })
       } catch(err) {
         console.log(err)
       }

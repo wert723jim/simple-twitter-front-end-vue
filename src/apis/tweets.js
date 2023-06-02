@@ -15,5 +15,10 @@ export default {
   },
   getTweetById(tweetId) {
     return apiHelper.get(`/tweets/${tweetId}`)
+  },
+  addReply(tweetId, comment) {
+    return apiHelper.post(`/tweets/${tweetId}/replies`,{
+      comment
+    })
   }
 }
