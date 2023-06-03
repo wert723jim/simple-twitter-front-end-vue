@@ -55,60 +55,11 @@
         </div>
       </div>
 
-      <div class="list">
-        <div class="list__post">
-          <div class="list__post__headshot">
-            <img src="" alt="">
-          </div>
-          <div class="list__post__info">
-            <div class="list__post__info__user">
-              <div class="list__post__info__user__name">
-                Apple
-              </div>
-              <div class="list__post__info__user__decor second-font">
-                <span>@apple</span>
-                &middot;
-                <span>3小時</span>
-              </div>
-            </div>
-            <div class="list__post__info__replyto second-font">
-              回覆
-              <router-link to="/user/1">
-                @apple
-              </router-link>
-            </div>
-            <div class="list__post__info__content">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo, assumenda?
-            </div>
-          </div>
-        </div>
-        <div class="list__post">
-          <div class="list__post__headshot">
-            <img src="" alt="">
-          </div>
-          <div class="list__post__info">
-            <div class="list__post__info__user">
-              <div class="list__post__info__user__name">
-                Apple
-              </div>
-              <div class="list__post__info__user__decor second-font">
-                <span>@apple</span>
-                &middot;
-                <span>3小時</span>
-              </div>
-            </div>
-            <div class="list__post__info__replyto second-font">
-              回覆
-              <router-link to="/user/1">
-                @apple
-              </router-link>
-            </div>
-            <div class="list__post__info__content">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae, vitae! Lorem ipsum dolor sit amet consectetur adipisicing elit. Iusto, quaerat.
-            </div>
-          </div>
-        </div>
-      </div>
+      <RepliesList 
+      :initial-replies="replies"
+      />
+
+      
     </div>
     <transition>
       <ReplyModal 
@@ -123,24 +74,28 @@
 
 <script>
 import ReplyModal from '../components/ReplyModal.vue'
+import RepliesList from '../components/RepliesList.vue'
 import tweetAPI from '../apis/tweets'
 import { Toast } from '../utils/helpers'
 
 export default {
   components: {
-    ReplyModal
+    ReplyModal,
+    RepliesList
   },
   data() {
     return {
       modalShow: false,
       postDetail: {
         User:{}
-      }
+      },
+      replies: []
     }
   },
   created() {
     const {id: tweetId} = this.$route.params
     this.fetchTweet(tweetId)
+    this.fetchReplies(tweetId)
   },
   methods: {
     showModal() {
@@ -157,6 +112,25 @@ export default {
       } catch(err) {
         console.log(err)
       }
+    },
+    async fetchReplies(tweetId) {
+      try {
+        const {data} = await tweetAPI.getAllReplies(tweetId)
+
+
+
+        this.replies = data.map(t => t = {
+          ...t,
+          tweeter: {
+            account: this.postDetail.User.account,
+            id: this.postDetail.User.id
+          } 
+        })
+
+      } catch(err) {
+        console.log(err)
+      }
+      
     },
     async handleAfterSubmit(comment) {
       try {
@@ -179,6 +153,7 @@ export default {
 
 <style lang="scss" scoped>
 .container {
+  width: 100%;
   height: 100%;
   padding-left: 202px;
   padding-right: 24px;
@@ -271,55 +246,5 @@ export default {
     padding-top: 16px;
     gap: 128px;
   }
-}
-
-.list {
-  &__post {
-    display: flex;
-    padding: 16px 24px;
-    border-bottom: 1px solid #E6ECF0;
-
-    &__headshot {
-      width: 50px;
-      height: 50px;
-      background: black;
-      border-radius: 50px;
-      
-      img {
-        width: 50px;
-        height: 50px;
-        border-radius: 50px;
-      }
-    }
-
-    &__info {
-      margin-left: 8px;
-
-      &__content {
-        margin-bottom: 9px;
-      }
-
-      &__user {
-        display: flex;
-        margin-bottom: 8px;
-
-        &__decor {
-          margin-left: 8px;
-          color: $secondary;
-        }
-      }
-
-      &__replyto {
-        margin-bottom: 8px;
-        color: $secondary;
-
-        a {
-          text-decoration: none;
-          color: $brand-color;
-        }
-      }
-    }
-  }
-
 }
 </style>

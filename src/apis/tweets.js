@@ -20,5 +20,8 @@ export default {
     return apiHelper.post(`/tweets/${tweetId}/replies`,{
       comment
     })
+  },
+  getAllReplies(tweetId) {
+    return apiHelper.get(`/tweets/${tweetId}/replies`)
   }
 }
