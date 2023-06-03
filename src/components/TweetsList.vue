@@ -47,10 +47,22 @@
             <img src="../assets/img/icon_reply@2x.png" alt="">
             <span>{{ tweet.replyCount }}</span>
           </a>
-          <div class="list__post__info__box__likes">
+          <a
+            href="#"
+            class="list__post__info__box__likes"
+            @click.stop.prevent="addLike(tweet.id)"
+          >
             <img src="../assets/img/icon_like@2x.png" alt="">
             <span>{{ tweet.likeCount }}</span>
-          </div>
+          </a>
+          <a
+            href="#"
+            class="list__post__info__box__likes"
+            @click.stop.prevent="removeLike(tweet.id)"
+          >
+            <img src="../assets/img/icon_liked@2x.png" alt="">
+            <span>{{ tweet.likeCount }}</span>
+          </a>
         </div>
       </div>
     </div>
@@ -125,6 +137,32 @@ export default {
         })
       } catch(err) {
         console.log(err)
+      }
+    },
+    async addLike(tweetId) {
+      try{
+        await tweetAPI.likeTweet(tweetId)
+
+      } catch(err) {
+        console.log(err)
+        const { message } = err.response.data
+        Toast.fire({
+          icon: 'error',
+          title: message
+        })
+      }
+    },
+    async removeLike(tweetId) {
+      try {
+        await tweetAPI.unlikeTweet(tweetId)
+        
+      } catch(err) {
+        console.log(err)
+        const { message } = err.response.data
+        Toast.fire({
+          icon: 'error',
+          title: message
+        })
       }
     }
   }
