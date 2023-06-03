@@ -126,7 +126,7 @@ export default {
     ...mapState(['currentUser']),
     // 根據 userId 變動來 filter 推文
     filterTweetsByUserId() {
-      return this.tweets.filter(tweet => tweet.UserId === this.userProfile.id )
+      return this.tweets.filter(tweet => tweet.User.id === this.userProfile.id )
     }
   },
   // 只要 route 變動就執行，避免 route 將 user/:id 都視為同一個路由
