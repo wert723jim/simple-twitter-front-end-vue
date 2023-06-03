@@ -9,7 +9,7 @@
         <form action="" @submit.prevent.stop="addTweet">
           <div class="tweet__info">
             <div class="tweet__info__headshot">
-              <img src="" alt="">
+              <img :src="currentUser.avatart" alt="">
             </div>
             <div class="tweet__info__content">
               <textarea  placeholder="有什麼新鮮事?" v-model="description"></textarea>
@@ -33,6 +33,7 @@
 import TweetsList from '../components/TweetsList.vue'
 import tweetAPI from '../apis/tweets'
 import { Toast } from '../utils/helpers'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -47,6 +48,9 @@ export default {
   },
   created() {
     this.fetchAllTweets()
+  },
+  computed: {
+    ...mapState(['currentUser'])
   },
   methods: {
     showModal() {

@@ -13,7 +13,8 @@ export default new Vuex.Store({
       email: '',
       account: '',
       role: '',
-      accessToken: ''
+      accessToken: '',
+      avatart: ''
     },
     isAuthenticated: false,
   },
@@ -42,13 +43,14 @@ export default new Vuex.Store({
       try {
         // 呼叫 API 傳 accessToken 至後端驗證 accessToken 是否過期
         const { data } = await userAPI.getMyInfo()
-        const { id, name, account, email, role } = data
+        const { id, name, account, email, role, avatart} = data
         commit('setCurrentUser', {
           id,
           name,
           account,
           email,
-          role
+          role,
+          avatart
         })
         return true
       } catch(err) {

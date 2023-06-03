@@ -76,7 +76,6 @@
           placeholder="請再次輸入密碼"
           required
           autocomplete
-          autofocus
         >
       </div>
       <div class="form__btn">
