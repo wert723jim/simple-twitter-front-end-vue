@@ -13,7 +13,7 @@
       <div class="post">
         <div class="post__header">
           <div class="post__header__headshot">
-            <img src="" alt="">
+            <img :src="postDetail.User.avatar" alt="">
           </div>
           <div class="post__header__info">
             <div class="post__header__info__name">
