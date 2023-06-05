@@ -34,6 +34,7 @@ export default {
   methods: {
     chooseTab(tab) {
       this.chosenTab = tab
+      this.$emit('after-choose', this.chosenTab)
     }
   }
 }

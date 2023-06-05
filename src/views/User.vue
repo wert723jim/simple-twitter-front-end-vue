@@ -73,10 +73,23 @@
         </div>
       </div>
 
-      <Tabs :tabs="['推文', '回覆', '喜歡的內容']"/>
+      <Tabs
+        :tabs="['推文', '回覆', '喜歡的內容']"
+        @after-choose="handleAfterChoose"
+      />
 
       <TweetsList 
         :initial-tweets="tweets"
+        v-if="chosenTab === '推文'"
+      />
+
+      <RepliesList 
+        :initial-replies="replies"
+        v-else-if="chosenTab === '回覆'"
+      />
+
+      <TweetsList :initialTweets="likes"
+        v-else-if="chosenTab === '喜歡的內容'"
       />
     </div>
     <transition>
@@ -92,6 +105,7 @@
 <script>
 import EditUserModal from '../components/EditUserModal.vue'
 import TweetsList from '../components/TweetsList.vue'
+import RepliesList from '../components/RepliesList.vue'
 import Tabs from '../components/Tabs.vue'
 import userAPI from '../apis/users'
 // import tweetAPI from '../apis/tweets'
@@ -101,7 +115,8 @@ export default {
   components: {
     EditUserModal,
     TweetsList,
-    Tabs
+    Tabs,
+    RepliesList
   },
   data() {
     return {
@@ -114,26 +129,29 @@ export default {
         introduction: '',
         avatar: '',
       },
-      tweets: []
+      chosenTab: '推文',
+      tweets: [],
+      replies: [],
+      likes: []
     }
   },
   created() {
     const { id: userId } = this.$route.params
     this.fetchProfile(userId)
     this.fetchUserTweets(userId)
+    this.fetchUserTweetReplies(userId)
+    this.fetchUserLikes(userId)
   },
   computed: {
     ...mapState(['currentUser'])
-    // 根據 userId 變動來 filter 推文
-    // filterTweetsByUserId() {
-    //   return this.tweets.filter(tweet => tweet.User.id === this.userProfile.id )
-    // }
   },
   // 只要 route 變動就執行，避免 route 將 user/:id 都視為同一個路由
   beforeRouteUpdate(to, from, next) {
     const {id: userId} = to.params
     this.fetchProfile(userId)
     this.fetchUserTweets(userId)
+    this.fetchUserTweetReplies(userId)
+    this.fetchUserLikes(userId)
     next()
   },
   methods: {
@@ -170,6 +188,36 @@ export default {
       } catch(err) {
         console.log(err)
       }
+    },
+    async fetchUserTweetReplies(userId) {
+      try{
+        const {data} = await userAPI.getUserTweetReply(userId)
+
+        this.replies = data
+      } catch(err) {
+        console.log(err)
+      }
+    },
+    async fetchUserLikes(userId) {
+      try {
+        const { data } = await userAPI.getUserLikes(userId)
+
+        this.likes = data
+      } catch(err) {
+        console.log(err)
+      }
+    },
+    handleAfterChoose(tab) {
+      this.chosenTab = tab
+      const { id: userId } = this.$route.params
+      if (tab === '推文') {
+        this.fetchUserTweets(userId)
+      } else if(tab === '回覆') {
+        this.fetchUserTweetReplies(userId)
+      } else if (tab === '喜歡的內容') {
+        this.fetchUserLikes(userId)
+      }
+
     }
   }
 }

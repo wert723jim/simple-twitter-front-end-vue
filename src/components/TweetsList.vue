@@ -169,7 +169,12 @@ export default {
 
 
       } catch(err) {
-        console.log(err)
+        const message = err.message || err.response.data.message || err
+        console.log(err.response.data.message)
+        Toast.fire({
+          icon: 'error',
+          title: message
+        })
         
       }
     },

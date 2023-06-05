@@ -21,12 +21,12 @@
         </div>
         <div class="list__post__info__replyto second-font">
           回覆
-          <router-link :to="{name: 'user', params: {id: reply.tweeter.id}}">
-            @{{reply.tweeter.account}}
+          <router-link :to="{name: 'user', params: {id: reply.User.id}}">
+            @{{reply.User.account}}
           </router-link>
         </div>
         <div class="list__post__info__content">
-          {{reply.comment}}
+          {{reply.Replies[0].comment}}
         </div>
       </div>
     </div>
