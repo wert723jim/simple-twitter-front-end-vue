@@ -63,8 +63,6 @@ export default {
       try {
         const { data } = await tweetAPI.getAllTweet()
 
-        console.log(data)
-
         this.tweets = data
       } catch(err) {
         console.log(err)
@@ -73,11 +71,26 @@ export default {
     async addTweet() {
       try{
         // 檢驗字數
+        if (!this.description.trim()) throw new Error('推文不可為空白!')
         await tweetAPI.addTweet({
           description: this.description
         })
 
         this.fetchAllTweets()
+
+        
+        // 從頭開始加入元素
+        // 因資料庫id 有可能因為刪除而出現不連號
+        // this.tweets.unshift({
+        //   User: {
+        //     ...this.currentUser
+        //   },
+        //   createdAt: Date.now(),
+        //   description: this.description,
+        //   likeCount: 0,
+        //   likes: null,
+        //   id: 555
+        // })
 
         this.description = ''
 
@@ -86,8 +99,8 @@ export default {
           title: '推文成功'
         })
       } catch(err) {
-        const { message } = err.response.data
-        console.log(err)
+        // const { message } = err.response.data
+        const message = err.message || err.response.data.message || err
         Toast.fire({
           icon: 'error',
           title: message
