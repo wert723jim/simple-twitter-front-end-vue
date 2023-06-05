@@ -133,6 +133,17 @@ export default {
         const tweetId = this.replyTweetId
         await tweetAPI.addReply(tweetId, comment)
         this.modalShow = false
+
+        this.tweets = this.tweets.map(t => {
+          if(t.id === this.replyTweetId) {
+            return {
+              ...t,
+              replyCount: ++t.replyCount
+            }
+          }
+          return t
+        })
+
         Toast.fire({
           icon: 'success',
           title: '回覆成功'
