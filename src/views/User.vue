@@ -7,7 +7,7 @@
         </a>
         <div class="title__content">
           <h5>{{userProfile.name}}</h5>
-          <div class="title__content__count second-font">{{filterTweetsByUserId.length}} 推文</div>
+          <div class="title__content__count second-font">{{tweets.length}} 推文</div>
         </div>
       </div>
 
@@ -76,7 +76,7 @@
       <Tabs :tabs="['推文', '回覆', '喜歡的內容']"/>
 
       <TweetsList 
-        :initial-tweets="filterTweetsByUserId"
+        :initial-tweets="tweets"
       />
     </div>
     <transition>
@@ -94,7 +94,7 @@ import EditUserModal from '../components/EditUserModal.vue'
 import TweetsList from '../components/TweetsList.vue'
 import Tabs from '../components/Tabs.vue'
 import userAPI from '../apis/users'
-import tweetAPI from '../apis/tweets'
+// import tweetAPI from '../apis/tweets'
 import { mapState } from 'vuex'
 
 export default {
@@ -120,19 +120,20 @@ export default {
   created() {
     const { id: userId } = this.$route.params
     this.fetchProfile(userId)
-    this.fetchAllTweets()
+    this.fetchUserTweets(userId)
   },
   computed: {
-    ...mapState(['currentUser']),
+    ...mapState(['currentUser'])
     // 根據 userId 變動來 filter 推文
-    filterTweetsByUserId() {
-      return this.tweets.filter(tweet => tweet.User.id === this.userProfile.id )
-    }
+    // filterTweetsByUserId() {
+    //   return this.tweets.filter(tweet => tweet.User.id === this.userProfile.id )
+    // }
   },
   // 只要 route 變動就執行，避免 route 將 user/:id 都視為同一個路由
   beforeRouteUpdate(to, from, next) {
     const {id: userId} = to.params
     this.fetchProfile(userId)
+    this.fetchUserTweets(userId)
     next()
   },
   methods: {
@@ -161,9 +162,9 @@ export default {
         console.log(err)
       }
     },
-    async fetchAllTweets() {
+    async fetchUserTweets(userId) {
       try {
-        const { data } = await tweetAPI.getAllTweet()
+        const { data } = await userAPI.getUserTweets(userId)
 
         this.tweets = data
       } catch(err) {

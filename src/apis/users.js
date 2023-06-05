@@ -24,5 +24,14 @@ export default {
     return apiHelper.put(`/users/${userId}`, {
       ...setting
     })
+  },
+  getUserTweets(userId) {
+    return apiHelper.get(`/users/${userId}/tweets`)
+  },
+  getUserTweetReply(userId) {
+    return apiHelper.get(`/users/${userId}/replied_tweets`)
+  },
+  getUserLikes(userId) {
+    return apiHelper.get(`/users/${userId}/likes`)
   }
 }
