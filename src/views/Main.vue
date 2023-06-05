@@ -63,6 +63,8 @@ export default {
       try {
         const { data } = await tweetAPI.getAllTweet()
 
+        console.log(data)
+
         this.tweets = data
       } catch(err) {
         console.log(err)

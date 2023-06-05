@@ -11,7 +11,7 @@
       <div class="list__post__info">
         <div class="list__post__info__user">
           <div class="list__post__info__user__name">
-            <router-link :to="{name: 'user', params: {id: tweet.UserId}}">
+            <router-link :to="{name: 'user', params: {id: tweet.User.id}}">
               {{tweet.User.name}}
             </router-link>
             
@@ -51,6 +51,7 @@
             href="#"
             class="list__post__info__box__likes"
             @click.stop.prevent="addLike(tweet.id)"
+            v-if="!tweet.liked"
           >
             <img src="../assets/img/icon_like@2x.png" alt="">
             <span>{{ tweet.likeCount }}</span>
@@ -59,6 +60,7 @@
             href="#"
             class="list__post__info__box__likes"
             @click.stop.prevent="removeLike(tweet.id)"
+            v-else
           >
             <img src="../assets/img/icon_liked@2x.png" alt="">
             <span>{{ tweet.likeCount }}</span>
@@ -108,9 +110,9 @@ export default {
   // 當有資料進來後，將資料重新填入
   watch: {
     initialTweets(newValue) {
-      this.tweets = {
+      this.tweets = [
         ...newValue
-      }
+    ]
     }
   },
   computed: {
@@ -143,18 +145,37 @@ export default {
       try{
         await tweetAPI.likeTweet(tweetId)
 
+        this.tweets = this.tweets.map(t => {
+          if(t.id === tweetId) {
+            return {
+              ...t,
+              likeCount: ++t.likeCount,
+              liked: 1
+            }
+          }
+          return t
+        })
+
+
       } catch(err) {
         console.log(err)
-        const { message } = err.response.data
-        Toast.fire({
-          icon: 'error',
-          title: message
-        })
+        
       }
     },
     async removeLike(tweetId) {
       try {
         await tweetAPI.unlikeTweet(tweetId)
+
+        this.tweets = this.tweets.map(t => {
+          if(t.id === tweetId) {
+            return {
+              ...t,
+              likeCount: --t.likeCount,
+              liked: null
+            }
+          }
+          return t
+        })
         
       } catch(err) {
         console.log(err)
