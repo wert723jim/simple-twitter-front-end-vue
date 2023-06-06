@@ -33,5 +33,11 @@ export default {
   },
   getUserLikes(userId) {
     return apiHelper.get(`/users/${userId}/likes`)
+  },
+  getUserFollowers(userId) {
+    return apiHelper.get(`/users/${userId}/followers`)
+  },
+  getUserFollowings(userId) {
+    return apiHelper.get(`/users/${userId}/followings`)
   }
 }

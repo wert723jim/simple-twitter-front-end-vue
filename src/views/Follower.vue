@@ -6,7 +6,7 @@
           <img src="../assets/img/icon_back@2x.png" alt="" class="title__back__img">
         </a>
         <div class="title__content">
-          <h5>John Doe</h5>
+          <h5>{{userProfile.name}}</h5>
           <div class="title__content__count second-font">25 推文</div>
         </div>
       </div>
@@ -60,6 +60,7 @@
 
 <script>
 import Tabs from '../components/Tabs.vue'
+import userAPI from '../apis/users'
 
 export default {
   components: {
@@ -67,8 +68,18 @@ export default {
   },
   data() {
     return {
-      modalShow: false
+      userProfile: {}
     }
+  },
+  created() {
+    const {id: userId} = this.$route.params
+    this.fetchProfile(userId)
+    this.fetchfollowers(userId)
+  },
+  beforeRouterUpdate(to, from, next) {
+    const {id: userId} = to.params
+    this.fetchProfile(userId)
+    next()
   },
   methods: {
     showModal() {
@@ -76,6 +87,24 @@ export default {
     },
     closeModal() {
       this.modalShow = false
+    },
+    async fetchProfile(userId) {
+      try {
+        const { data } = await userAPI.getUserById(userId)
+
+        this.userProfile = data
+      } catch(err) {
+        console.log(err)
+      }
+    },
+    async fetchfollowers(userId) {
+      try {
+        const { data } = await userAPI.getUserFollowers(userId)
+
+        console.log(data)
+      } catch(err) {
+        console.log(err)
+      }
     }
   }
 }
