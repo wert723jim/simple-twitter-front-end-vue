@@ -45,9 +45,17 @@
           </a>
           <button
             class="info__btn__follow"
-            @click.stop.prevent="showModal"
+            @click.stop.prevent="follow(userProfile.id)"
+            v-if="false"
           >
           追蹤
+          </button>
+          <button
+            class="info__btn__unfollow"
+            @click.stop.prevent="unFollow(userProfile.id)"
+            v-else
+          >
+          取消追蹤
           </button>
         </div>
 
@@ -217,8 +225,24 @@ export default {
       } else if (tab === '喜歡的內容') {
         this.fetchUserLikes(userId)
       }
+    },
+    async follow(userId) {
+      try {
+        console.log('follow', userId)
+        await userAPI.makeFollow(this.userProfile.id)
+      } catch(err) {
+        console.log(err)
+      }
+    },
+    async unFollow(userId) {
+      try {
+        console.log('unfollow', userId)
+        await userAPI.unFollow(this.userProfile.id)
+      } catch(err) {
+        console.log(err)
+      }
+    },
 
-    }
   }
 }
 </script>
@@ -331,6 +355,15 @@ export default {
       border: 1px solid $brand-color;
       background: white;
       border-radius: 50px;
+    }
+
+    &__unfollow {
+      width: 96px;
+      height: 40px;
+      border-radius: 50px;
+      background: $brand-color;
+      color: white;
+      border: none;
     }
   }
 

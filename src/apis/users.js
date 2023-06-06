@@ -39,5 +39,13 @@ export default {
   },
   getUserFollowings(userId) {
     return apiHelper.get(`/users/${userId}/followings`)
+  },
+  makeFollow(userId) {
+    return apiHelper.post(`/followships`, {
+      id: userId
+    })
+  },
+  unFollow(userId) {
+    return apiHelper.delete(`/followships/${userId}`)
   }
 }
