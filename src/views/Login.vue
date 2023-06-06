@@ -8,7 +8,7 @@
         <h3>登入 Alphitter</h3>
       </div>
     </div>
-    <form action="" class="form" @submit.prevent.stop="handleSubmit">
+    <form action="" class="form" @submit.prevent.stop="handleSubmit" id="login__form">
       <div class="form__group">
         <label for="account" class="second-font">
           帳號

@@ -22,7 +22,7 @@
             <span>{{tweet.createdAt | fromNow}}</span>
           </div>
           <div class="list__post__info__user__remove" v-if="currentUser.role === 'admin'">
-            <form action="">
+            <form action="" id="tweet__list__form">
               <button>
                 <img src="../assets/img/icon_x_gray@2x.png" alt="">
               </button>

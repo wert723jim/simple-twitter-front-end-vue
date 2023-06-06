@@ -5,7 +5,7 @@
         <h4>帳戶設定</h4>
       </div>
 
-      <form action="" class="form" @submit.prevent.stop="handleSubmit">
+      <form action="" class="form" @submit.prevent.stop="handleSubmit" id="setting__form">
       <div class="form__group">
         <label for="account" class="second-font">
           帳號

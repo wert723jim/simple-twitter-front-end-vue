@@ -6,7 +6,7 @@
       </div>
 
       <div class="tweet">
-        <form action="" @submit.prevent.stop="addTweet">
+        <form action="" @submit.prevent.stop="addTweet" id="tweet__form">
           <div class="tweet__info">
             <div class="tweet__info__headshot">
               <img :src="currentUser.avatart" alt="">

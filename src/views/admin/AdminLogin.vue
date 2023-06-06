@@ -8,7 +8,7 @@
         <h3>後台登入</h3>
       </div>
     </div>
-    <form action="" class="form" @submit.prevent.stop="handleSubmit">
+    <form action="" class="form" @submit.prevent.stop="handleSubmit" id="admin__login__form">
       <div class="form__group">
         <label for="account" class="second-font">
           帳號
