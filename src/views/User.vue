@@ -46,7 +46,7 @@
           <button
             class="info__btn__follow"
             @click.stop.prevent="follow(userProfile.id)"
-            v-if="false"
+            v-if="true"
           >
           追蹤
           </button>
@@ -67,7 +67,7 @@
           <div class="info__text__intro">
             {{userProfile.introduction}}
           </div>
-          <router-link to="/user/1/follower">
+          <router-link :to="{name: 'follower', params: {id: userProfile.id}}">
             <div class="info__text__followship">
               <div class="info__text__followship__followings">
                 34 個<span>跟隨中</span> 

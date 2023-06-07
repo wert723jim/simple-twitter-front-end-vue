@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="wrapper">
+    <div class="followship__wrapper">
       <div class="title">
         <h4>推薦跟隨</h4>
       </div>
@@ -60,7 +60,7 @@
 
 <style lang="scss" scoped>
 
-.wrapper {
+.followship__wrapper {
   margin-top: 16px;
   width: 273px;
   background: #FAFAFB;

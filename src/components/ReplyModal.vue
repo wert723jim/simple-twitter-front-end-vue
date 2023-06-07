@@ -94,7 +94,6 @@ export default {
       }
     },
     handleSubmit() {
-      console.log(this.comment)
       this.$emit('after-submit', this.comment)
     }
   }
