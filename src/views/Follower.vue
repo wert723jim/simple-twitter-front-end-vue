@@ -12,48 +12,63 @@
       </div>
 
       <!-- list tabs -->
-      <Tabs :tabs="['追蹤者', '正在追蹤' ]"/>
+      <Tabs 
+        :tabs="['追蹤者', '正在追蹤' ]"
+        @after-choose="handleAfterChoose"
+      />
+      <div v-show="chosenTab === '追蹤者'">
+        <div 
+          class="list"
+          v-for="follower in followers"
+          :key="follower.id"
+        >
+          <div class="list__user">
+          <div class="list__user__headshot">
+            <img src="" alt="">
+          </div>
+          <div class="list__user__info">
+            <div class="list__user__info__top">
+              <div class="list__user__info__top__name">
+                {{follower["Followers.name"]}}
+              </div>
+              <div class="list__user__info__top__btn">
+                <button>追蹤</button>
+              </div>
+            </div>
+            <div class="list__user__info__introduction">
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos, temporibus! Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque, porro!
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
+      <div v-show="chosenTab === '正在追蹤'">
+        <div 
+          class="list"
+          v-for="following in followings"
+          :key="following.id"
+        >
+          <div class="list__user">
+          <div class="list__user__headshot">
+            <img src="" alt="">
+          </div>
+          <div class="list__user__info">
+            <div class="list__user__info__top">
+              <div class="list__user__info__top__name">
+                <span>{{following['Followings.name']}}</span>
+              </div>
+              <div class="list__user__info__top__btn">
+                <button>追蹤</button>
+              </div>
+            </div>
+            <div class="list__user__info__introduction">
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos, temporibus! Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque, porro!
+            </div>
+          </div>
+          </div>
+        </div>
+      </div>
 
-      <div class="list">
-        <div class="list__user">
-         <div class="list__user__headshot">
-          <img src="" alt="">
-         </div>
-         <div class="list__user__info">
-          <div class="list__user__info__top">
-            <div class="list__user__info__top__name">
-              Apple
-            </div>
-            <div class="list__user__info__top__btn">
-              <button>追蹤</button>
-            </div>
-          </div>
-          <div class="list__user__info__introduction">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos, temporibus! Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque, porro!
-          </div>
-         </div>
-        </div>
-      </div>
-      <div class="list">
-        <div class="list__user">
-         <div class="list__user__headshot">
-          <img src="" alt="">
-         </div>
-         <div class="list__user__info">
-          <div class="list__user__info__top">
-            <div class="list__user__info__top__name">
-              <span>Apple</span>
-            </div>
-            <div class="list__user__info__top__btn">
-              <button>追蹤</button>
-            </div>
-          </div>
-          <div class="list__user__info__introduction">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos, temporibus! Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque, porro!
-          </div>
-         </div>
-        </div>
-      </div>
     </div>
   </div>
 </template>
@@ -68,17 +83,23 @@ export default {
   },
   data() {
     return {
-      userProfile: {}
+      userProfile: {},
+      followings: [],
+      followers: [],
+      chosenTab: '追蹤者'
     }
   },
   created() {
     const {id: userId} = this.$route.params
     this.fetchProfile(userId)
-    this.fetchfollowers(userId)
+    this.fetchFollowers(userId)
+    this.fetchFollowings(userId)
   },
   beforeRouterUpdate(to, from, next) {
     const {id: userId} = to.params
     this.fetchProfile(userId)
+    this.fetchFollowers(userId)
+    this.fetchFollowings(userId)
     next()
   },
   methods: {
@@ -97,13 +118,33 @@ export default {
         console.log(err)
       }
     },
-    async fetchfollowers(userId) {
+    async fetchFollowers(userId) {
       try {
         const { data } = await userAPI.getUserFollowers(userId)
 
-        console.log(data)
+        this.followers = data
       } catch(err) {
         console.log(err)
+      }
+    },
+    async fetchFollowings(userId) {
+      try {
+        const { data } = await userAPI.getUserFollowings(userId)
+        
+        this.followings = data
+      } catch(err) {
+        console.log(err)
+      }
+    },
+    async handleAfterChoose(tab) {
+      if (tab === '追蹤者') {
+        this.chosenTab = tab
+        console.log(tab)
+        this.fetchFollowers(this.userProfile.id)
+      } else if (tab === '正在追蹤') {
+        this.chosenTab = tab
+        console.log(tab)
+        this.fetchFollowings(this.userProfile.id)
       }
     }
   }
@@ -112,6 +153,7 @@ export default {
 
 <style lang="scss" scoped>
 .container {
+  width: 100%;
   height: 100%;
   padding-left: 202px;
   padding-right: 24px;
