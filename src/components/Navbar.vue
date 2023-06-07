@@ -72,10 +72,12 @@ export default {
     showModal() {
       this.modalShow = true
     },
-    closeModal() {
+    closeModal(success) {
       this.modalShow = false
-      // 重整頁面去觸發 tweet list component 的 fetch all tweets api
-      this.$router.go()
+      if(success) {
+        // 重整頁面去觸發 tweet list component 的 fetch all tweets api
+        this.$router.go()
+      }
     },
     async logout() {
       try {

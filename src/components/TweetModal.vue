@@ -66,7 +66,7 @@ export default {
           description: this.description
         })
         // 成功的話關閉modal
-        this.$emit('modalClose')
+        this.$emit('modalClose', true)
 
         Toast.fire({
           icon: 'success',
