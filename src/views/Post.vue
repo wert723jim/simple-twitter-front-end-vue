@@ -149,6 +149,7 @@ export default {
         console.log('tweetId:', this.postDetail.id)
         const tweetId = this.postDetail.id
         await tweetAPI.addReply(tweetId, comment)
+        this.postDetail.replyCount +=1
         this.modalShow = false
         Toast.fire({
           icon: 'success',
