@@ -50,7 +50,20 @@
             <img src="../assets/img/icon_reply@2x.png" alt="">
           </a>
           <div class="post__btn__like">
-            <img src="../assets/img/icon_like@2x.png" alt="">
+            <a 
+              href=""
+              v-if="!postDetail.liked"
+              @click.stop.prevent="liked(postDetail.id)"
+            >
+              <img src="../assets/img/icon_like@2x.png" alt="">
+            </a>
+            <a 
+              href=""
+              v-else
+              @click.stop.prevent="unliked(postDetail.id)"
+            >
+              <img src="../assets/img/icon_liked@2x.png" alt="">
+            </a>
           </div>
         </div>
       </div>
@@ -117,8 +130,6 @@ export default {
       try {
         const {data} = await tweetAPI.getAllReplies(tweetId)
 
-
-
         this.replies = data.map(t => t = {
           ...t,
           tweeter: {
@@ -143,6 +154,32 @@ export default {
           icon: 'success',
           title: '回覆成功'
         })
+      } catch(err) {
+        console.log(err)
+      }
+    },
+    async liked(tweetId) {
+      try {
+        await tweetAPI.likeTweet(tweetId)
+
+        this.postDetail = {
+          ...this.postDetail,
+          liked: 1,
+          likeCount: ++this.postDetail.likeCount
+        }
+      } catch(err) {
+        console.log(err)
+      }
+    },
+    async unliked(tweetId) {
+      try {
+        await tweetAPI.unlikeTweet(tweetId)
+
+        this.postDetail = {
+          ...this.postDetail,
+          liked: null,
+          likeCount: --this.postDetail.likeCount
+        }
       } catch(err) {
         console.log(err)
       }
