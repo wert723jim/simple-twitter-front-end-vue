@@ -50,6 +50,9 @@
 </template>
 
 <script>
+import adminAuthAPI from '../../apis/admin/authorization'
+import { Toast } from '../../utils/helpers'
+
 export default {
   data() {
     return {
@@ -58,13 +61,27 @@ export default {
     }
   },
   methods: {
-    handleSubmit () {
-      const data = JSON.stringify({
-        account: this.account,
-        password: this.password
-      })
+    async handleSubmit () {
+      try {
+        const {data} = await adminAuthAPI.login({
+          account: this.account,
+          password: this.password
+        })
 
-      console.log(data)
+        localStorage.setItem('token', data.accessToken)
+
+        this.$store.commit('setCurrentUser', data)
+
+        Toast.fire({
+          icon: 'success',
+          title: '登入成功'
+        })
+
+
+        this.$router.push({name: 'admin-main'})
+      } catch(err) {
+        console.log(err)
+      }
     }
   }
 }
