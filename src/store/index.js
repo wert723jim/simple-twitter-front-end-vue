@@ -65,7 +65,8 @@ export default new Vuex.Store({
         const { data } = await authAPI.getAccessToken()
         localStorage.setItem('token', data)
         // 拿到 refresh token 後，重新驗證 access token
-        this.dispatch('fetchCurrentUser')
+        // 要 await 不然會跳過這個，順序會亂掉，*****
+        await this.dispatch('fetchCurrentUser')
         commit('setCurrentUser', {accessToken: data})
         return true
       } catch(err) {
