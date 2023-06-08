@@ -46,7 +46,7 @@
           <button
             class="info__btn__follow"
             @click.stop.prevent="follow(userProfile.id)"
-            v-if="true"
+            v-if="!userProfile.followed"
           >
           追蹤
           </button>
@@ -70,10 +70,10 @@
           <router-link :to="{name: 'follower', params: {id: userProfile.id}}">
             <div class="info__text__followship">
               <div class="info__text__followship__followings">
-                34 個<span>跟隨中</span> 
+                {{followingsCount}} 個<span>跟隨中</span> 
               </div>
               <div class="info__text__followship__followers">
-                59 位<span>跟隨者</span>
+                {{followersCount}} 位<span>跟隨者</span>
               </div>
             </div>
           </router-link>
@@ -136,11 +136,14 @@ export default {
         email: '',
         introduction: '',
         avatar: '',
+        followed: null
       },
       chosenTab: '推文',
       tweets: [],
       replies: [],
-      likes: []
+      likes: [],
+      followersCount: -1,
+      followingsCount: -1
     }
   },
   created() {
@@ -149,6 +152,8 @@ export default {
     this.fetchUserTweets(userId)
     this.fetchUserTweetReplies(userId)
     this.fetchUserLikes(userId)
+    this.fetchFollowers(userId)
+    this.fetchFollowings(userId)
   },
   computed: {
     ...mapState(['currentUser'])
@@ -160,6 +165,8 @@ export default {
     this.fetchUserTweets(userId)
     this.fetchUserTweetReplies(userId)
     this.fetchUserLikes(userId)
+    this.fetchFollowers(userId)
+    this.fetchFollowings(userId)
     next()
   },
   methods: {
@@ -173,7 +180,7 @@ export default {
       try {
         const { data } = await userAPI.getUserById(userId)
 
-        const { id, name, account, email, introduction, avatar } = data
+        const { id, name, account, email, introduction, avatar, followed } = data
 
         this.userProfile = {
           id,
@@ -181,7 +188,8 @@ export default {
           account,
           email,
           introduction,
-          avatar
+          avatar,
+          followed
         }
 
       } catch(err) {
@@ -230,6 +238,8 @@ export default {
       try {
         console.log('follow', userId)
         await userAPI.makeFollow(this.userProfile.id)
+
+        this.userProfile.followed = 1
       } catch(err) {
         console.log(err)
       }
@@ -238,11 +248,30 @@ export default {
       try {
         console.log('unfollow', userId)
         await userAPI.unFollow(this.userProfile.id)
+
+        this.userProfile.followed = null
       } catch(err) {
         console.log(err)
       }
     },
+    async fetchFollowers(userId) {
+      try {
+        const { data } = await userAPI.getUserFollowers(userId)
 
+        this.followersCount = data.length
+      } catch(err) {
+        console.log(err)
+      }
+    },
+    async fetchFollowings(userId) {
+      try {
+        const { data } = await userAPI.getUserFollowings(userId)
+        
+        this.followingsCount = data.length
+      } catch(err) {
+        console.log(err)
+      }
+    },
   }
 }
 </script>
