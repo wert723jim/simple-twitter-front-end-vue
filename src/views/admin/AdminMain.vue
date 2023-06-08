@@ -5,7 +5,9 @@
         <h4>推文清單</h4>
       </div>
 
-      <TweetsList />
+      <TweetsList
+        :initial-tweets="tweets"
+      />
     </div>
     
   </div>
@@ -13,6 +15,7 @@
 
 <script>
 import TweetsList from '../../components/TweetsList.vue'
+import tweetAPI from '../../apis/tweets'
 
 export default {
   components: {
@@ -20,8 +23,11 @@ export default {
   },
   data() {
     return {
-      modalShow: false
+      tweets: []
     }
+  },
+  created() {
+    this.fetchAllTweets()
   },
   methods: {
     showModal() {
@@ -29,6 +35,10 @@ export default {
     },
     closeModal() {
       this.modalShow = false
+    },
+    async fetchAllTweets() {
+      const {data} = await tweetAPI.getAllTweet()
+      this.tweets = data
     }
   }
 }
@@ -36,6 +46,7 @@ export default {
 
 <style lang="scss" scoped>
 .container {
+  width: 100%;
   height: 100%;
   padding-left: 202px;
   padding-right: 24px;
