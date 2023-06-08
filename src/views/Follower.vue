@@ -16,7 +16,7 @@
         :tabs="['追蹤者', '正在追蹤' ]"
         @after-choose="handleAfterChoose"
       />
-      <div v-show="chosenTab === '追蹤者'">
+      <!-- <div v-show="chosenTab === '追蹤者'">
         <div 
           class="list"
           v-for="follower in followers"
@@ -24,19 +24,32 @@
         >
           <div class="list__user">
           <div class="list__user__headshot">
-            <img src="" alt="">
+            <img :src="follower.avatar" alt="">
           </div>
           <div class="list__user__info">
             <div class="list__user__info__top">
               <div class="list__user__info__top__name">
-                {{follower["Followers.name"]}}
+                {{follower.name}}
               </div>
-              <div class="list__user__info__top__btn">
-                <button>追蹤</button>
+              <div>
+                <button
+                  class="list__user__info__top__follow"
+                  @click.stop.prevent="follow(follower.id)"
+                  v-if="!follower.followed"
+                >
+                追蹤
+                </button>
+                <button
+                  class="list__user__info__top__unfollow"
+                  @click.stop.prevent="unFollow(follower.id)"
+                  v-else
+                >
+                取消追蹤
+                </button>
               </div>
             </div>
             <div class="list__user__info__introduction">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos, temporibus! Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque, porro!
+              {{follower.introduction}}
             </div>
           </div>
           </div>
@@ -50,24 +63,47 @@
         >
           <div class="list__user">
           <div class="list__user__headshot">
-            <img src="" alt="">
+            <img :src="following.avatar" alt="">
           </div>
           <div class="list__user__info">
             <div class="list__user__info__top">
               <div class="list__user__info__top__name">
-                <span>{{following['Followings.name']}}</span>
+                <span>{{following.name}}</span>
               </div>
-              <div class="list__user__info__top__btn">
-                <button>追蹤</button>
+              <div>
+                <button
+                  class="list__user__info__top__follow"
+                  @click.stop.prevent="follow(following.id)"
+                  v-if="!following.followed"
+                >
+                追蹤
+                </button>
+                <button
+                  class="list__user__info__top__unfollow"
+                  @click.stop.prevent="unFollow(following.id)"
+                  v-else
+                >
+                取消追蹤
+                </button>
               </div>
             </div>
             <div class="list__user__info__introduction">
-              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos, temporibus! Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque, porro!
+              {{following.introduction}}
             </div>
           </div>
           </div>
         </div>
-      </div>
+      </div> -->
+
+      <FollowsList
+        :initial-follows="followers"
+        v-if="chosenTab === '追蹤者'"
+      />
+
+      <FollowsList 
+        :initial-follows="followings"
+        v-else
+      />
 
     </div>
   </div>
@@ -76,10 +112,13 @@
 <script>
 import Tabs from '../components/Tabs.vue'
 import userAPI from '../apis/users'
+import FollowsList from '../components/FollowsList.vue'
+
 
 export default {
   components: {
-    Tabs
+    Tabs,
+    FollowsList
   },
   data() {
     return {
@@ -92,8 +131,9 @@ export default {
   created() {
     const {id: userId} = this.$route.params
     this.fetchProfile(userId)
-    this.fetchFollowers(userId)
+    // fetchFollowings 需在前面，因為 fetch followers 有用到 fetchFollowings 的資料
     this.fetchFollowings(userId)
+    this.fetchFollowers(userId)
   },
   beforeRouterUpdate(to, from, next) {
     const {id: userId} = to.params
@@ -101,6 +141,24 @@ export default {
     this.fetchFollowers(userId)
     this.fetchFollowings(userId)
     next()
+  },
+  computed: {
+    isFollowerFollowed: {
+      get() {
+        let followingsArray = this.followings.map(f => {
+          return f.id
+        })
+        return this.followers.map(follower => {
+          return {
+            ...follower,
+            followed: followingsArray.includes(follower.id)
+          }
+        })
+      },
+      set() {
+
+      }
+    }
   },
   methods: {
     showModal() {
@@ -136,15 +194,47 @@ export default {
         console.log(err)
       }
     },
-    async handleAfterChoose(tab) {
+    handleAfterChoose(tab) {
       if (tab === '追蹤者') {
         this.chosenTab = tab
-        console.log(tab)
         this.fetchFollowers(this.userProfile.id)
       } else if (tab === '正在追蹤') {
         this.chosenTab = tab
-        console.log(tab)
         this.fetchFollowings(this.userProfile.id)
+      }
+    },
+    async follow(userId) {
+      try {
+        await userAPI.makeFollow(userId)
+
+        this.followings = this.followings.map(following => {
+          if (following.id === userId) {
+            return {
+              ...following,
+              followed: 1
+            }
+          }
+          return following
+        })
+      } catch(err) {
+        console.log(err)
+      }
+    },
+    async unFollow(userId) {
+      try {
+        await userAPI.unFollow(userId)
+        
+        this.followings = this.followings.map(following => {
+          if (following.id === userId) {
+            return {
+              ...following,
+              followed: null
+            }
+          }
+          return following
+        })
+      } catch(err) {
+        console.log(err)
       }
     }
   }
@@ -211,6 +301,7 @@ export default {
     }
 
     &__info {
+      width: 100%;
       margin-left: 8px;
       &__top {
         display: flex;
@@ -221,16 +312,24 @@ export default {
           align-items: center;
         }
 
-        &__btn {
+        &__follow {
           margin-bottom: 8px;
-          button {
-            width: 64px;
-            height: 40px;
-            border-radius: 50px;
-            background: white;
-            color: $brand-color;
-            border: 1px solid $brand-color;
-          }
+          width: 64px;
+          height: 40px;
+          border-radius: 50px;
+          background: white;
+          color: $brand-color;
+          border: 1px solid $brand-color;
+        }
+
+        &__unfollow {
+          margin-bottom: 8px;
+          width: 96px;
+          height: 40px;
+          border-radius: 50px;
+          background: $brand-color;
+          color: white;
+          border: none;
         }
       }
     }
