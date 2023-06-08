@@ -130,14 +130,7 @@ export default {
       try {
         const {data} = await tweetAPI.getAllReplies(tweetId)
 
-        this.replies = data.map(t => t = {
-          ...t,
-          tweeter: {
-            account: this.postDetail.User.account,
-            id: this.postDetail.User.id
-          } 
-        })
-
+          this.replies = data 
       } catch(err) {
         console.log(err)
       }

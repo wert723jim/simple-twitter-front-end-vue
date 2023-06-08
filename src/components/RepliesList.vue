@@ -6,27 +6,27 @@
       :key="reply.id"
     >
       <div class="list__post__headshot">
-        <img :src="reply.User.avatar" alt="">
+        <img :src="reply.reply_user.avatar" alt="">
       </div>
       <div class="list__post__info">
         <div class="list__post__info__user">
           <div class="list__post__info__user__name">
-            {{reply.User.name}}
+            {{reply.reply_user.name}}
           </div>
           <div class="list__post__info__user__decor second-font">
-            <span>@{{reply.User.account}}</span>
+            <span>@{{reply.reply_user.account}}</span>
             &middot;
             <span>{{reply.createdAt | fromNow}}</span>
           </div>
         </div>
-        <div class="list__post__info__replyto second-font">
+        <div class="list__post__info__replyto second-font" v-if="reply.tweet_user">
           回覆
-          <router-link :to="{name: 'user', params: {id: reply.User.id}}">
-            @{{reply.User.account}}
+          <router-link :to="{name: 'user', params: {id: reply.tweet_user.id}}">
+            @{{reply.tweet_user.account}}
           </router-link>
         </div>
         <div class="list__post__info__content">
-          {{reply.Replies[0].comment}}
+          {{reply.comment}}
         </div>
       </div>
     </div>
