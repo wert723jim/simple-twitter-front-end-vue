@@ -5,7 +5,7 @@
         <img src="../assets/img/logo@2x.png" alt="">
       </router-link>
     </div>
-    <div class="list">
+    <div class="list" v-if="currentUser.role === 'user'">
       <div class="list__group">
         <router-link to="/main" class="list__group__link">
           <img src="../assets/img/main@2x.png" alt="" class="list__group__link__img">
@@ -25,6 +25,20 @@
           <img src="../assets/img/setting@2x.png" alt="" class="list__group__link__img">
           <img src="../assets/img/setting-c@2x.png" alt="" class="list__group__link__img--active">
           <!-- <span class="list__group__link__text">設定</span> -->
+        </router-link>
+      </div>
+    </div>
+    <div class="list" v-else-if="currentUser.role === 'admin'">
+      <div class="list__group">
+        <router-link to="/admin/main" class="list__group__link">
+          <img src="../assets/img/tweets@2x.png" alt="" class="list__group__link__img">
+          <img src="../assets/img/tweets-c@2x.png" alt="" class="list__group__link__img--active">
+        </router-link>
+      </div>
+      <div class="list__group">
+        <router-link to="/admin/users" class="list__group__link">
+          <img src="../assets/img/users@2x.png" alt="" class="list__group__link__img">
+          <img src="../assets/img/users-c@2x.png" alt="" class="list__group__link__img--active">
         </router-link>
       </div>
     </div>

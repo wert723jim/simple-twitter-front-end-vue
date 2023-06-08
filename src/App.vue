@@ -1,10 +1,10 @@
 <template>
   <div id="app">
     <!-- 成功登入後才顯示 -->
-    <Navbar v-if="currentUser.role === 'user' || isAuthenticated"/>
+    <Navbar v-if="isAuthenticated"/>
     <router-view/>
     <!-- 成功登入後才顯示 -->
-    <FollowRecommend v-if="currentUser.role === 'user' || isAuthenticated"/>
+    <FollowRecommend v-if="currentUser.role === 'user' && isAuthenticated"/>
   </div>
 </template>
 
