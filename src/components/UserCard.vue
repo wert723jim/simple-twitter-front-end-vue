@@ -71,6 +71,7 @@ export default {
     img {
       width: 100%;
       height: 100%;
+      border-radius: 10px 10px 0 0;
     }
   }
 
@@ -88,7 +89,9 @@ export default {
       border-radius: 100px;
       border: 4px solid white;
       img {
-        
+        width: 100%;
+        height: 100%;
+        border-radius: 100%;
       }
     }
   }
