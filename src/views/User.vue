@@ -355,7 +355,7 @@ export default {
     display: flex;
     margin-bottom: 16px;
     padding-right:16px;
-    justify-content: end;
+    justify-content: flex-end;
     gap: 16px;
 
     a {

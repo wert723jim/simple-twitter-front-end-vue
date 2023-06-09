@@ -145,7 +145,7 @@ export default {
     &__btn {
       flex: 1;
       display: flex;
-      justify-content: end;
+      justify-content: flex-end;
       align-items: center;
 
       &__follow {

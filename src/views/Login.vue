@@ -153,7 +153,7 @@ export default {
 
 .portal {
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
   margin-top: 16px;
   width: 100%;
   a {

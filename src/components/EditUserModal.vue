@@ -25,7 +25,7 @@
               </div>
               <div class="modal__wrapper__form__top__headshot">
                 <label for="headshot">
-                  <div class="wrapper">
+                  <div class="headshot__wrapper">
                     <img :src="userProfile.avatar" alt="" class="modal__wrapper__form__top__headshot__img">
                     <div class="mask">
                       <img src="../assets/img/icon_camera@2x.png" alt="" class="icon_camera">
@@ -164,7 +164,7 @@ export default {
       &__btn {
         flex: 1;
         display: flex;
-        justify-content: end;
+        justify-content: flex-end;
         
         button {
           height: 40px;
@@ -232,7 +232,7 @@ export default {
             display: flex;
           }
         
-          .wrapper {
+          &__wrapper {
             position: relative;
             height: 100%;
             width: 100%
