@@ -72,25 +72,25 @@ export default {
       try{
         // 檢驗字數
         if (!this.description.trim()) throw new Error('推文不可為空白!')
-        await tweetAPI.addTweet({
+        const { data } = await tweetAPI.addTweet({
           description: this.description
         })
 
-        this.fetchAllTweets()
-
+        // this.fetchAllTweets()
+        const { tweet_id } = data
         
         // 從頭開始加入元素
         // 因資料庫id 有可能因為刪除而出現不連號
-        // this.tweets.unshift({
-        //   User: {
-        //     ...this.currentUser
-        //   },
-        //   createdAt: Date.now(),
-        //   description: this.description,
-        //   likeCount: 0,
-        //   likes: null,
-        //   id: 555
-        // })
+        this.tweets.unshift({
+          User: {
+            ...this.currentUser
+          },
+          createdAt: Date.now(),
+          description: this.description,
+          likeCount: 0,
+          likes: null,
+          id: tweet_id
+        })
 
         this.description = ''
 
