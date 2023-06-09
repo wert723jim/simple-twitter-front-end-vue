@@ -23,7 +23,9 @@
           </div>
           <div class="list__post__info__user__remove" v-if="currentUser.role === 'admin'">
             <form action="" id="tweet__list__form">
-              <button>
+              <button
+                @click.stop.prevent="removeTweet(tweet.id)"
+              >
                 <img src="../assets/img/icon_x_gray@2x.png" alt="">
               </button>
             </form>
@@ -85,6 +87,7 @@ import ReplyModal from '../components/ReplyModal.vue'
 import {fromNowFilter, emptyImageFilter} from '../utils/mixins'
 import { mapState } from 'vuex'
 import tweetAPI from '../apis/tweets'
+import adminTweetAPI from '../apis/admin/tweets'
 import { Toast } from '../utils/helpers'
 
 export default {
@@ -200,6 +203,14 @@ export default {
           icon: 'error',
           title: message
         })
+      }
+    },
+    async deleteTweet(tweetId) {
+      try {
+        await adminTweetAPI.deleteTweet(tweetId)
+        this.tweets = this.tweets.filter(tweet => tweet.id !== tweetId)
+      } catch(err) {
+        console.log(err)
       }
     }
   }
