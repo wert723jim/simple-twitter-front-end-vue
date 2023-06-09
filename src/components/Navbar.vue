@@ -42,7 +42,7 @@
         </router-link>
       </div>
     </div>
-    <div class="btn">
+    <div class="btn" v-if="currentUser.role === 'user'">
       <!-- create modal -->
       <button @click="showModal">
         推文
