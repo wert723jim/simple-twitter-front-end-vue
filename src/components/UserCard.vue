@@ -1,18 +1,18 @@
 <template>
   <div class="card">
     <div class="card__cover">
-      <img src="" alt="">
+      <img :src="user.cover" alt="">
     </div>
     <div class="card__head">
       <div class="card__head__img">
-        <img src="" alt="">
+        <img :src="user.avatar" alt="">
       </div>
       <div class="card__head__heading">
         <div class="card__head__heading__name">
-          John Doe
+          {{user.name}}
         </div>
         <div class="card__head__heading__account">
-          @heyjohn
+          @{{user.account}}
         </div>
       </div>
     </div>
@@ -20,24 +20,39 @@
       <div class="card__info__active">
         <div class="card__info__active__tweets">
           <img src="../assets/img/icon_tweets@2x.png" alt="">
-          <span>1.5k</span> 
+          <span>{{user.tweet_count}}</span> 
         </div>
         <div class="card__info__active__likes">
           <img src="../assets/img/icon_like@2x.png" alt="">
-          <span>1.5k</span> 
+          <span>{{user.like_count}}</span> 
         </div>
       </div>
       <div class="card__info__follow">
         <div class="card__info__follow__followings">
-          34 個追蹤中
+          {{user.following_count}} 個追蹤中
         </div>
         <div class="card__info__follow__followers">
-          59 位追蹤者
+          {{user.follower_count}} 位追蹤者
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+export default {
+  props: {
+    initialUser: {
+      type: Object
+    }
+  },
+  data() {
+    return {
+      user: this.initialUser
+    }
+  }
+}
+</script>
 
 <style lang="scss" scoped>
 .card {

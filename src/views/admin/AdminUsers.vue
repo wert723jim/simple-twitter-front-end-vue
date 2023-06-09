@@ -8,7 +8,8 @@
       <div class="card-wrapper">
         <UserCard
           v-for="user in users"
-          :key="user"
+          :key="user.id"
+          :initial-user="user"
         />
       </div>
 
@@ -20,6 +21,7 @@
 
 <script>
 import UserCard from '../../components/UserCard.vue';
+import adminUserAPI from '../../apis/admin/users'
 
 export default {
 
@@ -29,10 +31,11 @@ export default {
   data() {
     return {
       modalShow: false,
-      users: [
-        1,2,3,4,5,6,7,8,9,0
-      ]
+      users: []
     }
+  },
+  created() {
+    this.fetchAllUsers()
   },
   methods: {
     showModal() {
@@ -40,6 +43,15 @@ export default {
     },
     closeModal() {
       this.modalShow = false
+    },
+    async fetchAllUsers() {
+      try {
+        const { data } = await adminUserAPI.getAllUser()
+
+        this.users = data
+      } catch(err) {
+        console.log(err)
+      }
     }
   }
 }
