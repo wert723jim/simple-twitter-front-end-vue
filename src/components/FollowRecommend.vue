@@ -25,14 +25,14 @@
             <button
               class="list__user__btn__follow"
               v-if="!user.followed"
-              @click.stop.prevent="followed()"
+              @click.stop.prevent="followed(user.id)"
             >
             追隨
             </button>
             <button
               class="list__user__btn__unFollow"
               v-else
-              @click.stop.prevent="unFollowed()"
+              @click.stop.prevent="unFollowed(user.id)"
             >
             取消追隨
             </button>
@@ -45,7 +45,8 @@
 
 <script>
 import adminAPI from '../apis/admin/users'
-// import userAPI from '../apis/users'
+import userAPI from '../apis/users'
+
 export default {
   data() {
     return {
@@ -59,44 +60,48 @@ export default {
     async fetchUsers() {
       try {
         const { data } = await adminAPI.getAllUser()
-        
+
         this.users = data
       } catch(err) {
         console.log(err)
       }
     },
-    // async followed(userId) {
-    //   try {
-    //     await userAPI.makeFollow(userId)
+    async followed(userId) {
+      try {
+        await userAPI.makeFollow(userId)
 
-    //     this.users = this.users.map(user => {
-    //       if (user.id === userId) {
-    //         return {
-    //           ...user,
-    //           followed: 1
-    //         }
-    //       }
-    //     })
-    //   } catch(err) {
-    //     console.log(err)
-    //   }
-    // },
-    // async unFollowed(userId) {
-    //   try {
-    //     await userAPI.unFollow(userId)
+        this.users = this.users.map(user => {
+          if (user.id === userId) {
+            return {
+              ...user,
+              followed: 1
+            }
+          }
+          return user
+        })
+        console.log('followed', userId)
+      } catch(err) {
+        console.log(err)
+      }
+    },
+    async unFollowed(userId) {
+      try {
+        await userAPI.unFollow(userId)
 
-    //     this.users = this.users.map(user => {
-    //       if (user.id === userId) {
-    //         return {
-    //           ...user,
-    //           followed: null
-    //         }
-    //       }
-    //     })
-    //   } catch(err) {
-    //     console.log(err)
-    //   }
-    // }
+        this.users = this.users.map(user => {
+          if (user.id === userId) {
+            return {
+              ...user,
+              followed: null
+            }
+          }
+          return user
+        })
+        console.log('unFollowed', userId)
+      } catch(err) {
+        console.log(err)
+      }
+    }
   }
 }
 </script>
