@@ -135,7 +135,7 @@ export default {
     this.fetchFollowings(userId)
     this.fetchFollowers(userId)
   },
-  beforeRouterUpdate(to, from, next) {
+  beforeRouteUpdate(to, from, next) {
     const {id: userId} = to.params
     this.fetchProfile(userId)
     this.fetchFollowers(userId)
