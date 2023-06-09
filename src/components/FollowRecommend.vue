@@ -21,7 +21,7 @@
               @{{user.account}}
             </div>
           </div>
-          <div class="list__user__btn">
+          <div class="list__user__btn" v-if="currentUser.id !== user.id">
             <button
               class="list__user__btn__follow"
               v-if="!user.followed"
@@ -46,6 +46,7 @@
 <script>
 import adminAPI from '../apis/admin/users'
 import userAPI from '../apis/users'
+import { mapState } from 'vuex'
 
 export default {
   data() {
@@ -55,6 +56,9 @@ export default {
   },
   created() {
     this.fetchUsers()
+  },
+  computed: {
+    ...mapState(['currentUser'])
   },
   methods: {
     async fetchUsers() {

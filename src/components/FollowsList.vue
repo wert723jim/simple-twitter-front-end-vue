@@ -14,7 +14,8 @@
             <div class="list__user__info__top__name">
               {{follow.name}}
             </div>
-            <div>
+            <!-- 如果 user 跟 登入者相同，則不顯示 button -->
+            <div v-if="currentUser.id !== follow.id">
               <button
                 class="list__user__info__top__follow"
                 @click.stop.prevent="followed(follow.id)"
@@ -42,6 +43,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import userAPI from '../apis/users'
 
 export default {
@@ -61,6 +63,9 @@ export default {
         ...newValue
     ]
     }
+  },
+  computed: {
+    ...mapState(['currentUser'])
   },
   methods: {
     async followed(userId) {
@@ -118,6 +123,8 @@ export default {
   }
 
   &__info {
+    display: flex;
+    flex-direction: column;
     width: 100%;
     margin-left: 8px;
     &__top {
@@ -127,6 +134,8 @@ export default {
       &__name {
         display: flex;
         align-items: center;
+        // 若 button no render，則要給名字高度，不然空間會被壓縮
+        height: 40px;
       }
 
       &__follow {
