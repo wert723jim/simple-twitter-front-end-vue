@@ -100,7 +100,9 @@ export default {
         })
       } catch(err) {
         // const { message } = err.response.data
-        const message = err.message || err.response.data.message || err
+        // console.log(err.response)
+        // let message = ''
+        const message = err.response ? err.response.data.message : false || err.message
         Toast.fire({
           icon: 'error',
           title: message
