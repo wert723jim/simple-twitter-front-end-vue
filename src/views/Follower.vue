@@ -7,7 +7,7 @@
         </a>
         <div class="title__content">
           <h5>{{userProfile.name}}</h5>
-          <div class="title__content__count second-font">25 推文</div>
+          <div class="title__content__count second-font">{{tweetsCount}} 推文</div>
         </div>
       </div>
 
@@ -125,7 +125,8 @@ export default {
       userProfile: {},
       followings: [],
       followers: [],
-      chosenTab: '追蹤者'
+      chosenTab: '追蹤者',
+      tweetsCount: -1
     }
   },
   created() {
@@ -134,12 +135,14 @@ export default {
     // fetchFollowings 需在前面，因為 fetch followers 有用到 fetchFollowings 的資料
     this.fetchFollowings(userId)
     this.fetchFollowers(userId)
+    this.fetchUserTweets(userId)
   },
   beforeRouteUpdate(to, from, next) {
     const {id: userId} = to.params
     this.fetchProfile(userId)
     this.fetchFollowers(userId)
     this.fetchFollowings(userId)
+    this.fetchUserTweets(userId)
     next()
   },
   computed: {
@@ -167,6 +170,17 @@ export default {
     closeModal() {
       this.modalShow = false
     },
+    async fetchUserTweets(userId) {
+      try {
+        const { data } = await userAPI.getUserTweets(userId)
+
+
+        this.tweetsCount = data.length
+      } catch(err) {
+        console.log(err)
+      }
+    }
+    ,
     async fetchProfile(userId) {
       try {
         const { data } = await userAPI.getUserById(userId)
