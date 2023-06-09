@@ -99,9 +99,6 @@ export default {
           title: '推文成功'
         })
       } catch(err) {
-        // const { message } = err.response.data
-        // console.log(err.response)
-        // let message = ''
         const message = err.response ? err.response.data.message : false || err.message
         Toast.fire({
           icon: 'error',

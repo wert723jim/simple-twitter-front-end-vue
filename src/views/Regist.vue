@@ -111,6 +111,9 @@ export default {
   methods: {
     async handleSubmit () {
       try {
+        // 檢查 account、name、email、password、checkPassword 是否為空白
+        if (!(this.account && this.name && this.email && this.password && this.checkPassword)) throw new Error('不能有空白欄位')
+        
         await userAPI.addNewUser({
           account: this.account,
           name: this.name,
@@ -127,10 +130,14 @@ export default {
         this.$router.push({name: 'login'})
 
       } catch(err) {
-        const { msg } = err.response.data
+        const message = err.response ? err.response.data.message : false || err.message
         Toast.fire({
           icon: 'error',
-          title: msg
+          title: message
+        })
+        Toast.fire({
+          icon: 'error',
+          title: message
         })
       }
     }
