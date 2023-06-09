@@ -5,58 +5,101 @@
         <h4>推薦跟隨</h4>
       </div>
       <div class="list">
-        <div class="list__user">
+        <div
+          class="list__user"
+          v-for="user in users"
+          :key="user.id"
+        >
           <div class="list__user__img">
-            <img src="" alt="">
+            <img :src="user.avatar" alt="">
           </div>
           <div class="list__user__info">
             <div class="list__user__info__name">
-              Pizza Hut
+              {{user.name}}
             </div>
             <div class="list__user__info__account second-font">
-              @pizzahut
+              @{{user.account}}
             </div>
           </div>
-          <div class="list__user__follow-btn">
-            <button>追隨</button>
-          </div>
-        </div>
-        <div class="list__user">
-          <div class="list__user__img">
-            <img src="" alt="">
-          </div>
-          <div class="list__user__info">
-            <div class="list__user__info__name">
-              Pizza Hut
-            </div>
-            <div class="list__user__info__account second-font">
-              @pizzahut
-            </div>
-          </div>
-          <div class="list__user__follow-btn">
-            <button>追隨</button>
-          </div>
-        </div>
-        <div class="list__user">
-          <div class="list__user__img">
-            <img src="" alt="">
-          </div>
-          <div class="list__user__info">
-            <div class="list__user__info__name">
-              Pizza Hut
-            </div>
-            <div class="list__user__info__account second-font">
-              @pizzahut
-            </div>
-          </div>
-          <div class="list__user__follow-btn">
-            <button>追隨</button>
+          <div class="list__user__btn">
+            <button
+              class="list__user__btn__follow"
+              v-if="!user.followed"
+              @click.stop.prevent="followed()"
+            >
+            追隨
+            </button>
+            <button
+              class="list__user__btn__unFollow"
+              v-else
+              @click.stop.prevent="unFollowed()"
+            >
+            取消追隨
+            </button>
           </div>
         </div>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+import adminAPI from '../apis/admin/users'
+// import userAPI from '../apis/users'
+export default {
+  data() {
+    return {
+      users: []
+    }
+  },
+  created() {
+    this.fetchUsers()
+  },
+  methods: {
+    async fetchUsers() {
+      try {
+        const { data } = await adminAPI.getAllUser()
+        
+        this.users = data
+      } catch(err) {
+        console.log(err)
+      }
+    },
+    // async followed(userId) {
+    //   try {
+    //     await userAPI.makeFollow(userId)
+
+    //     this.users = this.users.map(user => {
+    //       if (user.id === userId) {
+    //         return {
+    //           ...user,
+    //           followed: 1
+    //         }
+    //       }
+    //     })
+    //   } catch(err) {
+    //     console.log(err)
+    //   }
+    // },
+    // async unFollowed(userId) {
+    //   try {
+    //     await userAPI.unFollow(userId)
+
+    //     this.users = this.users.map(user => {
+    //       if (user.id === userId) {
+    //         return {
+    //           ...user,
+    //           followed: null
+    //         }
+    //       }
+    //     })
+    //   } catch(err) {
+    //     console.log(err)
+    //   }
+    // }
+  }
+}
+</script>
 
 <style lang="scss" scoped>
 
@@ -94,13 +137,13 @@
       }
     }
 
-    &__follow-btn {
+    &__btn {
       flex: 1;
       display: flex;
       justify-content: end;
       align-items: center;
 
-      button {
+      &__follow {
         display: block;
         color: $brand-color;
         background: white;
@@ -108,6 +151,15 @@
         width: 64px;
         height: 40px;
         border-radius: 50px;
+      }
+
+      &__unFollow {
+        width: 96px;
+        height: 40px;
+        border-radius: 50px;
+        background: $brand-color;
+        color: white;
+        border: none;
       }
     }
   }
