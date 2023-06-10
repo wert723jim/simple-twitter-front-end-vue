@@ -116,7 +116,9 @@ export default {
         await userAPI.updateUserById(userId, {
           account: this.account,
           name: this.name,
-          email: this.email
+          email: this.email,
+          password: this.password,
+          checkPassword: this.checkPassword
         })
 
         Toast.fire({
