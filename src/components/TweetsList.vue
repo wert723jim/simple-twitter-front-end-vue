@@ -24,7 +24,7 @@
           <div class="list__post__info__user__remove" v-if="currentUser.role === 'admin'">
             <form action="" id="tweet__list__form">
               <button
-                @click.stop.prevent="removeTweet(tweet.id)"
+                @click.stop.prevent="deleteTweet(tweet.id)"
               >
                 <img src="../assets/img/icon_x_gray@2x.png" alt="">
               </button>
@@ -40,7 +40,7 @@
           </div>
         </router-link>
         
-        <div class="list__post__info__box second-font">
+        <div class="list__post__info__box second-font" v-if="currentUser.role !== 'admin'">
           <a
             href="#"
             class="list__post__info__box__replies"
