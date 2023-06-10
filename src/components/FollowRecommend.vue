@@ -65,7 +65,24 @@ export default {
       try {
         const { data } = await adminAPI.getAllUser()
 
-        this.users = data
+        let topTen = []
+
+        topTen.push(data[0])
+
+        for(let i = 1; i < data.length; i ++) {
+          // 將長度儲存，以免在下面 for 迴圈時，topTen 長度會不斷變長
+          const nowLength = topTen.length
+          for(let t = 0; t < nowLength; t ++) {
+            if (data[i].follower_count >= topTen[t].follower_count) {
+              topTen.splice(t, 0, data[i])
+              break
+            }
+            if (t + 1 === nowLength) {
+              topTen.push(data[i])
+            }
+          }
+        }
+        this.users = topTen.slice(0,10)
       } catch(err) {
         console.log(err)
       }
