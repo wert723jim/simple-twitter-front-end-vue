@@ -21,7 +21,7 @@
         </router-link>
       </div>
       <div class="list__group">
-        <router-link to="/user/1/setting" class="list__group__link">
+        <router-link :to="{name: 'setting', params: {id: currentUser.id}}" class="list__group__link">
           <img src="../assets/img/setting@2x.png" alt="" class="list__group__link__img">
           <img src="../assets/img/setting-c@2x.png" alt="" class="list__group__link__img--active">
           <!-- <span class="list__group__link__text">設定</span> -->
