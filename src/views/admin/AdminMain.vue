@@ -38,7 +38,15 @@ export default {
     },
     async fetchAllTweets() {
       const {data} = await tweetAPI.getAllTweet()
-      this.tweets = data
+
+      const filterTweetDescription = data.map(tweet => {
+        return {
+          ...tweet,
+          description: tweet.description.slice(0, 50)
+        }
+      })
+
+      this.tweets = filterTweetDescription
     }
   }
 }
