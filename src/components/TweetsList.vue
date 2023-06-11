@@ -6,7 +6,9 @@
       :key="tweet.id"
     >
       <div class="list__post__headshot">
-        <img :src="tweet.User.avatar | emptyImage" alt="">
+        <router-link :to="{name: 'user', params: {id: tweet.User.id}}">
+          <img :src="tweet.User.avatar | emptyImage" alt="">
+        </router-link>
       </div>
       <div class="list__post__info">
         <div class="list__post__info__user">
@@ -256,6 +258,7 @@ export default {
         &__name {
           a {
             text-decoration: none;
+            color: black;
           }
         }
 
