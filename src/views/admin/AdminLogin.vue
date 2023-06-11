@@ -80,7 +80,11 @@ export default {
 
         this.$router.push({name: 'admin-main'})
       } catch(err) {
-        console.log(err)
+        const message = err.response ? err.response.data.message : false || err.message
+        Toast.fire({
+          icon: 'error',
+          title: message
+        })
       }
     }
   }
