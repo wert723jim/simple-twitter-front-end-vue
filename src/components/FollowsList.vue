@@ -45,6 +45,7 @@
 <script>
 import { mapState } from 'vuex'
 import userAPI from '../apis/users'
+import { Toast } from '../utils/helpers'
 
 export default {
   props: {
@@ -82,7 +83,11 @@ export default {
           return follow
         })
       } catch(err) {
-        console.log(err)
+        const message = err.response ? err.response.data.message : false || err.message
+        Toast.fire({
+          icon: 'error',
+          title: message
+        })
       }
     },
     async unFollow(userId) {
@@ -99,7 +104,11 @@ export default {
           return follow
         })
       } catch(err) {
-        console.log(err)
+        const message = err.response ? err.response.data.message : false || err.message
+        Toast.fire({
+          icon: 'error',
+          title: message
+        })
       }
     }
   }
