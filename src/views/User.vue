@@ -176,8 +176,9 @@ export default {
     showModal() {
       this.modalShow = true
     },
-    closeModal() {
+    closeModal(changed) {
       this.modalShow = false
+      if(changed) this.$router.go()
     },
     async fetchProfile(userId) {
       try {
@@ -237,22 +238,22 @@ export default {
         this.fetchUserLikes(userId)
       }
     },
-    async follow(userId) {
+    async follow() {
       try {
-        console.log('follow', userId)
         await userAPI.makeFollow(this.userProfile.id)
 
         this.userProfile.followed = 1
+        this.followersCount += 1
       } catch(err) {
         console.log(err)
       }
     },
-    async unFollow(userId) {
+    async unFollow() {
       try {
-        console.log('unfollow', userId)
         await userAPI.unFollow(this.userProfile.id)
 
         this.userProfile.followed = null
+        this.followersCount -= 1
       } catch(err) {
         console.log(err)
       }
