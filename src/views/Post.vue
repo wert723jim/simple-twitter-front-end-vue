@@ -90,6 +90,7 @@ import ReplyModal from '../components/ReplyModal.vue'
 import RepliesList from '../components/RepliesList.vue'
 import tweetAPI from '../apis/tweets'
 import { Toast } from '../utils/helpers'
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -109,6 +110,16 @@ export default {
     const {id: tweetId} = this.$route.params
     this.fetchTweet(tweetId)
     this.fetchReplies(tweetId)
+  },
+  beforeRouteUpdate(to, from, next) {
+    const {id: tweetId} = to.params
+    this.fetchTweet(tweetId)
+    this.fetchReplies(tweetId)
+    this.modalShow = false
+    next()
+  },
+  computed: {
+    ...mapState(['currentUser'])
   },
   methods: {
     showModal() {
@@ -138,18 +149,33 @@ export default {
     },
     async handleAfterSubmit(comment) {
       try {
-        console.log('tweetslist comment:', comment)
-        console.log('tweetId:', this.postDetail.id)
+        if (!comment.trim()) throw new Error('不能回覆空白')
+        
         const tweetId = this.postDetail.id
+
         await tweetAPI.addReply(tweetId, comment)
+
         this.postDetail.replyCount +=1
+
+        this.replies.unshift({
+          TweetId: tweetId,
+          comment,
+          createdAt: Date.now(),
+          reply_user: {
+            ...this.currentUser
+          }
+        })
         this.modalShow = false
         Toast.fire({
           icon: 'success',
           title: '回覆成功'
         })
       } catch(err) {
-        console.log(err)
+        const message = err.response ? err.response.data.message : false || err.message
+        Toast.fire({
+          icon: 'error',
+          title: message
+        })
       }
     },
     async liked(tweetId) {
@@ -162,7 +188,11 @@ export default {
           likeCount: ++this.postDetail.likeCount
         }
       } catch(err) {
-        console.log(err)
+        const message = err.response ? err.response.data.message : false || err.message
+        Toast.fire({
+          icon: 'error',
+          title: message
+        })
       }
     },
     async unliked(tweetId) {
@@ -175,7 +205,11 @@ export default {
           likeCount: --this.postDetail.likeCount
         }
       } catch(err) {
-        console.log(err)
+        const message = err.response ? err.response.data.message : false || err.message
+        Toast.fire({
+          icon: 'error',
+          title: message
+        })
       }
     }
   }
