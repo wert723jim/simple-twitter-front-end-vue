@@ -143,8 +143,14 @@ export default {
           icon: 'success',
           title: '個人資料更改成功'
         })
+
+        this.$emit('modalClose', true)
       } catch(err) {
-        console.log(err)
+        const message = err.response ? err.response.data.message : false || err.message
+        Toast.fire({
+          icon: 'error',
+          title: message
+        })
       }
     }
   }
