@@ -100,13 +100,16 @@
         v-else-if="chosenTab === '喜歡的內容'"
       />
     </div>
-    <transition>
+    <transition
+      v-if="modalShow"
+    >
       <EditUserModal
-        v-if="modalShow"
         @modalClose="closeModal"
         :initial-user="userProfile"
       />
-    </transition>
+    </transition>>
+    
+
   </div>
 </template>
 

@@ -26,7 +26,7 @@
               <div class="modal__wrapper__form__top__headshot">
                 <label for="headshot">
                   <div class="headshot__wrapper">
-                    <img :src="userProfile.avatar" alt="" class="modal__wrapper__form__top__headshot__img">
+                    <img :src="profile.avatar" alt="" class="modal__wrapper__form__top__headshot__img">
                     <div class="mask">
                       <img src="../assets/img/icon_camera@2x.png" alt="" class="icon_camera">
                     </div>
@@ -45,12 +45,12 @@
             <div class="modal__wrapper__form__bottom">
               <div class="modal__wrapper__form__bottom__group">
                 <label for="" class="second-font">名稱</label>
-                <input type="text" v-model="userProfile.name">
+                <input type="text" v-model="profile.name">
               </div>
-              <div class="name_count">8/50</div>
+              <div class="name_count">0/50</div>
               <div class="modal__wrapper__form__bottom__group">
                 <label for="" class="second-font">自我介紹</label>
-                <textarea type="text" v-model="userProfile.introduction">
+                <textarea type="text" v-model="profile.introduction">
                 </textarea>
               </div>
               <div class="description_count">0/160</div>
@@ -76,13 +76,35 @@ export default {
   data() {
     return {
       file: '',
-      userProfile: this.initialUser
+      profile: {
+        name: '',
+        account: '',
+        avatar: '',
+        cover: '',
+        introduction: ""
+      }
+    }
+  },
+  // 若直接將 initialUser 賦值給 profile ，v-model 則會影響到 parent data，因此用created時直接賦值
+  created() {
+    this.profile = {
+      ...this.profile,
+      ...this.initialUser
+    }
+  },
+  computed: {
+    nameCount() {
+      return this.profile.name.length
+    },
+    introductionCount() {
+      return this.profile.introduction.length
     }
   },
   methods: {
     closeModal() {
       this.$emit('modalClose', false)
     },
+    // 預覽上傳的圖片
     handleFileChange(e) {
       // console.log(this.$refs.file.files[0])
       // this.file = this.$refs.file.files[0]
@@ -91,25 +113,29 @@ export default {
         return
       } else {
         const imageURL = window.URL.createObjectURL(files[0])
-        this.userProfile.avatar = imageURL
+        this.profile.avatar = imageURL
       }
     },
     async handleSubmit(e) {
       try {
         const formData = new FormData()
         formData.append('image', e.target.file.files[0])
+        // 放回傳的 img URL
+        let link = ''
 
-        const { data } = await imgurAPI.uploadImage(formData)
+        if(e.target.file.files[0]) {
+          const { data } = await imgurAPI.uploadImage(formData)
 
-        const { link } = data.data
-        
-        if(!link) {
-          console.log('失敗')
+          link = data.data.link
+          
+          if(!link) {
+            throw new Error('Imgur img upload failed')
+          }
         }
-
-        await userAPI.updateUserById(this.userProfile.id, {
-          name: this.userProfile.name,
-          introduction: this.userProfile.introduction,
+        
+        await userAPI.updateUserById(this.profile.id, {
+          name: this.profile.name,
+          introduction: this.profile.introduction,
           avatar: link
         })
 
@@ -285,6 +311,7 @@ export default {
             border: none;
             outline: none;
             background: transparent;
+            resize: none;
           }
         }
 
