@@ -92,6 +92,7 @@
 <script>
 import userAPI from '../apis/users'
 import { Toast } from '../utils/helpers'
+import { mapState } from 'vuex'
 
 export default {
   data() {
@@ -106,14 +107,19 @@ export default {
   created() {
     this.fetchProfile()
   },
+  computed: {
+    ...mapState(['currentUser'])
+  },
   methods: {
     async handleSubmit() {
       try {
 
-        const {id: userId} = this.$route.params
+        // const {id: userId} = this.$route.params
         if (this.password !== this.checkPassword) throw new Error('密碼確認錯誤')
 
-        await userAPI.updateUserById(userId, {
+        console.log(this.currentUser.id)
+
+        await userAPI.updateUserById(this.currentUser.id, {
           account: this.account,
           name: this.name,
           email: this.email,
@@ -126,15 +132,14 @@ export default {
           title: '更改成功'
         })
 
-        this.router.push({name: 'user', params: {
-          id: userId
+        this.$router.push({name: 'user', params: {
+          id: this.currentUser.id
         }})
       } catch(err) {
-        console.log(err)
-        const { data } = err.response
+        const message = err.response ? err.response.data.message : false || err.message
         Toast.fire({
           icon: 'error',
-          title: data.message
+          title: message
         })
       }
     },
