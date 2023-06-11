@@ -9,7 +9,7 @@
         <form action="" @submit.prevent.stop="addTweet" id="tweet__form">
           <div class="tweet__info">
             <div class="tweet__info__headshot">
-              <img :src="currentUser.avatart" alt="">
+              <img :src="currentUser.avatar" alt="">
             </div>
             <div class="tweet__info__content">
               <textarea  placeholder="有什麼新鮮事?" v-model="description"></textarea>
@@ -156,7 +156,7 @@ export default {
       display: flex;
       align-items: center;
       padding-left: 8px;
-      // width: 100%;
+      width: 100%;
 
       textarea {
         border: none;
