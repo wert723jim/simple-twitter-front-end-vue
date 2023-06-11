@@ -6,36 +6,39 @@
       </div>
       <div class="list">
         <div
-          class="list__user"
           v-for="user in users"
           :key="user.id"
         >
-          <div class="list__user__img">
-            <img :src="user.avatar" alt="">
-          </div>
-          <div class="list__user__info">
-            <div class="list__user__info__name">
-              {{user.name}}
+          <div class="list__user" v-if="currentUser.id !== user.id">
+            <div class="list__user__img">
+              <img :src="user.avatar" alt="">
             </div>
-            <div class="list__user__info__account second-font">
-              @{{user.account}}
+            <div class="list__user__info">
+              <div class="list__user__info__name">
+                <router-link :to="{name: 'user', params: {id: user.id}}">
+                  {{user.name}}
+                </router-link>
+              </div>
+              <div class="list__user__info__account second-font">
+                @{{user.account}}
+              </div>
             </div>
-          </div>
-          <div class="list__user__btn" v-if="currentUser.id !== user.id">
-            <button
-              class="list__user__btn__follow"
-              v-if="!user.followed"
-              @click.stop.prevent="followed(user.id)"
-            >
-            追隨
-            </button>
-            <button
-              class="list__user__btn__unFollow"
-              v-else
-              @click.stop.prevent="unFollowed(user.id)"
-            >
-            取消追隨
-            </button>
+            <div class="list__user__btn" v-if="currentUser.id !== user.id">
+              <button
+                class="list__user__btn__follow"
+                v-if="!user.followed"
+                @click.stop.prevent="followed(user.id)"
+              >
+              追隨
+              </button>
+              <button
+                class="list__user__btn__unFollow"
+                v-else
+                @click.stop.prevent="unFollowed(user.id)"
+              >
+              取消追隨
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -47,6 +50,7 @@
 import adminAPI from '../apis/admin/users'
 import userAPI from '../apis/users'
 import { mapState } from 'vuex'
+import { Toast } from '../utils/helpers'
 
 export default {
   data() {
@@ -102,7 +106,11 @@ export default {
         })
         console.log('followed', userId)
       } catch(err) {
-        console.log(err)
+        const message = err.response ? err.response.data.message : false || err.message
+        Toast.fire({
+          icon: 'error',
+          title: message
+        })
       }
     },
     async unFollowed(userId) {
@@ -120,7 +128,11 @@ export default {
         })
         console.log('unFollowed', userId)
       } catch(err) {
-        console.log(err)
+        const message = err.response ? err.response.data.message : false || err.message
+        Toast.fire({
+          icon: 'error',
+          title: message
+        })
       }
     }
   }
@@ -157,6 +169,11 @@ export default {
       flex-direction: column;
       margin-left: 8px;
       justify-content: center;
+
+      a {
+        text-decoration: none;
+        color: black;
+      }
 
       &__account {
         color: $secondary;
