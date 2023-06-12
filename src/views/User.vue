@@ -107,7 +107,7 @@
         @modalClose="closeModal"
         :initial-user="userProfile"
       />
-    </transition>>
+    </transition>
     
 
   </div>
