@@ -211,8 +211,17 @@ export default {
       try {
         await adminTweetAPI.deleteTweet(tweetId)
         this.tweets = this.tweets.filter(tweet => tweet.id !== tweetId)
+        Toast.fire({
+          icon: 'success',
+          title: '刪除成功'
+        })
       } catch(err) {
-        console.log(err)
+        const message = err.message || err.response.data.message || err
+        console.log(err.response.data.message)
+        Toast.fire({
+          icon: 'error',
+          title: message
+        })
       }
     }
   }
