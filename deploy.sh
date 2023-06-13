@@ -13,6 +13,7 @@ cd dist
 # echo 'www.example.com' > CNAME
 
 git init
+git branch -m main
 git add -A
 git commit -m 'deploy'
 
@@ -21,6 +22,6 @@ git commit -m 'deploy'
 
 # if you are deploying to https://<USERNAME>.Github.io/<REPO>
 # git push -f https://github.com/<USERNAME>/<REPO>.git main:gh-pages
-git push -f https://github.com/wert723jim/simple-twitter-front-end-vue main:gh-pages
+git push -f https://github.com/wert723jim/simple-twitter-front-end-vue.git main:gh-pages
 
 cd -
