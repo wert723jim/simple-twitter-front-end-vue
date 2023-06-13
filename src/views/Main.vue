@@ -89,7 +89,8 @@ export default {
           description: this.description,
           likeCount: 0,
           likes: null,
-          id: tweet_id
+          id: tweet_id,
+          replyCount: 0
         })
 
         this.description = ''
