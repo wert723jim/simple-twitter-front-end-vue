@@ -2,7 +2,8 @@ import axios from 'axios'
 import Swal from 'sweetalert2'
 import authAPI from '../apis/authorization'
 
-const baseURL = 'http://localhost:3000/api'
+// const baseURL = 'http://localhost:3000/api'
+const baseURL = 'https://simpletwitter-1-a0198651.deta.app'
 
 const axiosInstance = axios.create({
   baseURL,

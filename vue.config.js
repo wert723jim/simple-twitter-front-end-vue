@@ -6,7 +6,5 @@ module.exports = {
       }
     }
   },
-  publicPath: process.env.NODE_ENV === 'production'
-  ? '/simple-twitter-front-end-vue/'
-  : '/'
+  publicPath: '/simple-twitter-front-end-vue/'
 };
