@@ -14,7 +14,7 @@ export default new Vuex.Store({
       account: '',
       role: '',
       accessToken: '',
-      avatart: ''
+      avatar: ''
     },
     isAuthenticated: false,
   },
