@@ -1,10 +1,10 @@
-import { apiHelper } from "../utils/helpers";
+import { apiHelper } from '../utils/helpers'
 
 export default {
-  login({account, password}) {
+  login({ account, password }) {
     return apiHelper.post('/auth', {
       account,
-      password
+      password,
     })
   },
   logout() {
@@ -13,5 +13,8 @@ export default {
   // 把 cookie 內的 refresh token 丟回去驗證，成功則回傳一個 access token
   getAccessToken() {
     return apiHelper.get('/refresh')
-  }
+  },
+  googleLogin(id_token) {
+    return apiHelper.post('/auth/google', { id_token })
+  },
 }
