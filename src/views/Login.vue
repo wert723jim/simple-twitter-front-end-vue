@@ -53,7 +53,6 @@
 
 <script>
 import authAPI from '../apis/authorization'
-import { Toast } from '../utils/helpers'
 import GoogleSignInBtn from '../components/GoogleSignInBtn.vue'
 
 export default {
@@ -68,32 +67,10 @@ export default {
   },
   methods: {
     async handleSubmit() {
-      try {
-        // 登入成功取得 access token 和 使用者資料
-        const { data } = await authAPI.login({
-          account: this.account,
-          password: this.password,
-        })
-        //將 access token 存入 local storage
-        localStorage.setItem('token', data.accessToken)
-        // 將使用者資訊使用 mutation 傳入 Vuex
-        this.$store.commit('setCurrentUser', data)
-
-        Toast.fire({
-          icon: 'success',
-          title: '登入成功',
-        })
-
-        this.$router.push({ name: 'main' })
-      } catch (err) {
-        const message = err.response
-          ? err.response.data.message
-          : false || err.message
-        Toast.fire({
-          icon: 'error',
-          title: message,
-        })
-      }
+      authAPI.loginWithToast(this, 'login', {
+        account: this.account,
+        password: this.password,
+      })
     },
   },
 }

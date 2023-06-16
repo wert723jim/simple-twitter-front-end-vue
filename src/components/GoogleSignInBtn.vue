@@ -369,69 +369,58 @@ import {
   reqToken,
 } from '../utils/googleHelpers'
 import authAPI from '../apis/authorization'
-import { Toast } from '../utils/helpers'
 
 export default {
   data() {
     return {
       state: '',
+      code_verifier: '',
+      targetWindow: null,
       showLoading: false,
+      domain: document.domain,
     }
   },
+  watch: {
+    domain(newVal, oldVal) {
+      console.log(newVal, oldVal)
+    },
+  },
+  mounted() {
+    const handleMessage = async (event) => {
+      if (event.data === 'check_state') {
+        console.log('check_state', this.targetWindow.origin)
+        console.log(window.location.href)
+        this.targetWindow.postMessage(this.state, '*')
+      } else if (event.data.code) {
+        const id_token = await reqToken(event.data.code, this.code_verifier)
+        if (!id_token) return
+
+        authAPI.loginWithToast(this, 'googleLogin', { id_token })
+        this.showLoading = false
+      } else if (event.data === 'close') {
+        this.showLoading = false
+        window.removeEventListener('message', handleMessage, false)
+      }
+    }
+
+    window.addEventListener('message', handleMessage)
+  },
+
   methods: {
     handleSingIn() {
       if (this.showLoading) return
       this.showLoading = true
-      const state = Math.random().toString()
-      const code_verifier = makeCoddVerifier()
-      const code_challenge = makeCodeChallenge(code_verifier)
-      const codeUrl = makeCodeUrl(state, code_challenge)
-      const targetWindow = window.open(codeUrl)
+      this.state = Math.random().toString()
+      this.code_verifier = makeCoddVerifier() // pkce -> proof key of code exchange
+      const code_challenge = makeCodeChallenge(this.code_verifier)
+      const codeUrl = makeCodeUrl(this.state, code_challenge)
+      this.targetWindow = window.open(codeUrl, '_blank')
       const clock = setInterval(() => {
-        console.log(targetWindow.length)
-        if (targetWindow.length === 0) {
+        if (this.targetWindow.length === 0) {
           this.showLoading = false
           clearInterval(clock)
         }
       }, 2000)
-
-      window.addEventListener('message', async (event) => {
-        if (event.data === 'check_state') {
-          targetWindow.postMessage(state)
-        } else if (event.data.code) {
-          // request token
-          console.log('request token')
-          const id_token = await reqToken(event.data.code, code_verifier)
-          console.log(id_token)
-          if (!id_token) return
-
-          try {
-            // 登入成功取得 access token 和 使用者資料
-            const { data } = await authAPI.googleLogin(id_token)
-            //將 access token 存入 local storage
-            localStorage.setItem('token', data.accessToken)
-            // 將使用者資訊使用 mutation 傳入 Vuex
-            this.$store.commit('setCurrentUser', data)
-            Toast.fire({
-              icon: 'success',
-              title: '登入成功',
-            })
-            this.$router.push({ name: 'main' })
-          } catch (err) {
-            const message = err.response
-              ? err.response.data.message
-              : false || err.message
-            Toast.fire({
-              icon: 'error',
-              title: message,
-            })
-            this.showLoading = false
-          }
-        } else if (event.data === 'close') {
-          console.log('關閉視窗')
-          this.showLoading = false
-        }
-      })
     },
   },
 }

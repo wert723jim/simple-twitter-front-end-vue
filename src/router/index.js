@@ -34,6 +34,22 @@ const routes = [
     path: '/login',
     name: 'login',
     component: Login,
+    beforeEnter: (to, from, next) => {
+      // // google oauth2.0
+      const urlParams = new URLSearchParams(window.location.search)
+      if (urlParams.has('state')) {
+        window.addEventListener('message', async (event) => {
+          if (event.data === urlParams.get('state')) {
+            await window.opener.postMessage({ code: urlParams.get('code') })
+            await window.opener.postMessage('close')
+            window.close()
+          }
+        })
+        window.opener.postMessage('check_state')
+        return
+      }
+      next()
+    },
   },
   {
     path: '/regist',
@@ -95,18 +111,6 @@ const router = new VueRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
-  // handle google redirect
-  const urlParams = new URLSearchParams(window.location.search)
-  if (urlParams.has('state')) {
-    window.addEventListener('message', (event) => {
-      if (event.data === urlParams.get('state')) {
-        window.opener.postMessage({ code: urlParams.get('code') })
-        window.close()
-      }
-    })
-    window.opener.postMessage('check_state')
-    return ''
-  }
   // 將 localstorage 中儲存的 access token 取出
   const tokenInLocalStorage = localStorage.getItem('token')
   // 將 vuex 中儲存的 access token 取出
@@ -131,12 +135,8 @@ router.beforeEach(async (to, from, next) => {
   //   accessTokenValid = await store.dispatch('getAccessToken')
   // }
   // 不需要 access token 之頁面
-  const pathWithoutAccessToken = [
-    'login',
-    'admin-login',
-    'regist',
-    'googleCallback',
-  ]
+  const pathWithoutAccessToken = ['login', 'admin-login', 'regist']
+
   // 若 accessTokenValid 為 false，且不是轉址到登入頁，則轉址到登入頁，若是要去登入頁則不用進入
   if (!accessTokenValid && !pathWithoutAccessToken.includes(to.name)) {
     next('/login')

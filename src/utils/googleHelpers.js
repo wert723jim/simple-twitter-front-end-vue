@@ -4,6 +4,7 @@ import randomstring from 'randomstring'
 import crypto from 'crypto'
 import base64url from 'base64url'
 import axios from 'axios'
+import { Toast } from '@/utils/helpers'
 
 export const makeCoddVerifier = () => {
   return randomstring.generate(128)
@@ -56,6 +57,9 @@ export const reqToken = async (code, code_verifier) => {
     })
     return axiosRes.data.id_token
   } catch (err) {
-    console.log(err)
+    Toast.fire({
+      icon: 'error',
+      title: err.response.data.error,
+    })
   }
 }
