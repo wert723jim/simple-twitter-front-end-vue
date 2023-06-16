@@ -40,7 +40,12 @@
       <div class="form__btn">
         <button
           type="submit"
-        >登入</button>
+        >
+          登入
+        </button>
+      </div>
+      <div class="form_btn">
+        <GoogleLogin />
       </div>
     </form>
     <div class="portal">
@@ -54,8 +59,12 @@
 <script>
 import authAPI from '../apis/authorization'
 import { Toast } from '../utils/helpers'
+import GoogleLogin from '../components/GoogleLogin.vue'
 
 export default {
+  components: {
+    GoogleLogin
+  },
   data() {
     return {
       account: '',
