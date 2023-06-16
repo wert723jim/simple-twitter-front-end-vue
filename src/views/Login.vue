@@ -2,17 +2,20 @@
   <div class="container">
     <div class="brand">
       <div class="brand__img">
-        <img src="../assets/img/logo@2x.png" alt="">
+        <img src="../assets/img/logo@2x.png" alt="" />
       </div>
       <div class="brand__title">
         <h3>登入 Alphitter</h3>
       </div>
     </div>
-    <form action="" class="form" @submit.prevent.stop="handleSubmit" id="login__form">
+    <form
+      action=""
+      class="form"
+      @submit.prevent.stop="handleSubmit"
+      id="login__form"
+    >
       <div class="form__group">
-        <label for="account" class="second-font">
-          帳號
-        </label>
+        <label for="account" class="second-font"> 帳號 </label>
         <input
           id="account"
           v-model="account"
@@ -22,12 +25,10 @@
           required
           autocomplete
           autofocus
-        >
+        />
       </div>
       <div class="form__group">
-        <label for="" class="second-font">
-          密碼
-        </label>
+        <label for="" class="second-font"> 密碼 </label>
         <input
           id="password"
           v-model="password"
@@ -35,13 +36,12 @@
           type="password"
           placeholder="請輸入密碼"
           required
-        >
+        />
       </div>
       <div class="form__btn">
-        <button
-          type="submit"
-        >登入</button>
+        <button type="submit">登入</button>
       </div>
+      <GoogleSignInBtn>使用 Google 帳號登入</GoogleSignInBtn>
     </form>
     <div class="portal">
       <router-link to="/regist">註冊</router-link>
@@ -53,43 +53,26 @@
 
 <script>
 import authAPI from '../apis/authorization'
-import { Toast } from '../utils/helpers'
+import GoogleSignInBtn from '../components/GoogleSignInBtn.vue'
 
 export default {
+  components: {
+    GoogleSignInBtn,
+  },
   data() {
     return {
       account: '',
-      password: ''
+      password: '',
     }
   },
   methods: {
-    async handleSubmit () {
-      try {
-        // 登入成功取得 access token 和 使用者資料
-        const { data } = await authAPI.login({
-          account: this.account,
-          password: this.password
-        })
-        //將 access token 存入 local storage
-        localStorage.setItem('token', data.accessToken)
-        // 將使用者資訊使用 mutation 傳入 Vuex
-        this.$store.commit('setCurrentUser', data)
-
-        Toast.fire({
-          icon: 'success',
-          title: '登入成功'
-        })
-
-        this.$router.push({name: 'main'})
-      } catch(err) {
-        const message = err.response ? err.response.data.message : false || err.message
-        Toast.fire({
-          icon: 'error',
-          title: message
-        })
-      }
-    }
-  }
+    async handleSubmit() {
+      authAPI.loginWithToast(this, 'login', {
+        account: this.account,
+        password: this.password,
+      })
+    },
+  },
 }
 </script>
 
@@ -125,8 +108,8 @@ export default {
     padding: 2px 10.55px;
     border-radius: 2px;
     border-bottom: 2px solid #657786;
-    height:54px;
-    background: #F5F8FA;
+    height: 54px;
+    background: #f5f8fa;
 
     label {
       color: #696974;
@@ -134,7 +117,6 @@ export default {
     }
   }
   &__btn {
-
     button {
       margin-top: 8px;
       width: 356px;

@@ -8,30 +8,30 @@ const baseURL = 'https://simpletwitter-1-a0198651.deta.app/api'
 const axiosInstance = axios.create({
   baseURL,
   // 新增這項設定，讓接到 response header set-cookie
-  withCredentials: true
+  withCredentials: true,
 })
-  // 發送 request 之前，使用 interceptors 處理
+// 發送 request 之前，使用 interceptors 處理
 axiosInstance.interceptors.request.use(
-  config => {
+  (config) => {
     const token = localStorage.getItem('token')
 
-    if(token) {
+    if (token) {
       config.headers['Authorization'] = `Bearer ${token}`
     }
 
     return config
   },
-  err => Promise.reject(err)
+  (err) => Promise.reject(err)
 )
 
 axiosInstance.interceptors.response.use(
-  res => {
+  (res) => {
     return res
   },
-  async err => {
+  async (err) => {
     const originalConfig = err.config
     const passURL = ['/auth', '/refresh']
-    if(!passURL.includes(originalConfig.url) && err.response) {
+    if (!passURL.includes(originalConfig.url) && err.response) {
       if (err.response.status === 401 && !originalConfig._retry) {
         originalConfig._retry = true
         try {
@@ -39,7 +39,7 @@ axiosInstance.interceptors.response.use(
           localStorage.setItem('token', data)
 
           return axiosInstance(originalConfig)
-        } catch(err) {
+        } catch (err) {
           return Promise.reject(err)
         }
       }
@@ -57,6 +57,6 @@ export const Toast = Swal.mixin({
   showConfirmButton: false,
   timer: 3000,
   customClass: {
-    container: 'swal_z'
-  }
+    container: 'swal_z',
+  },
 })

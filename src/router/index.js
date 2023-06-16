@@ -8,12 +8,11 @@ import AdminLogin from '../views/admin/AdminLogin.vue'
 // 引用 vuex store
 import store from '../store/index'
 
-
 Vue.use(VueRouter)
 
 const authorizeIsAdmin = (to, from, next) => {
   const currentUser = store.state.currentUser
-  if(currentUser && currentUser.role !== 'admin') {
+  if (currentUser && currentUser.role !== 'admin') {
     next('/404')
     return
   }
@@ -24,75 +23,91 @@ const routes = [
   {
     path: '/',
     name: 'root',
-    redirect: '/main'
+    redirect: '/main',
   },
   {
     path: '/main',
     name: 'main',
-    component: Main
+    component: Main,
   },
   {
     path: '/login',
     name: 'login',
-    component: Login
+    component: Login,
+    beforeEnter: (to, from, next) => {
+      // // google oauth2.0
+      const urlParams = new URLSearchParams(window.location.search)
+      if (urlParams.has('state')) {
+        window.addEventListener('message', async (event) => {
+          if (event.data === urlParams.get('state')) {
+            await window.opener.postMessage({ code: urlParams.get('code') })
+            await window.opener.postMessage('close')
+            window.close()
+          }
+        })
+        window.opener.postMessage('check_state')
+        return
+      }
+      next()
+    },
   },
   {
     path: '/regist',
     name: 'regist',
-    component: Regist
+    component: Regist,
   },
   {
     path: '/post/:id',
     name: 'post',
-    component: () => import ('../views/Post.vue')
+    component: () => import('../views/Post.vue'),
   },
   {
     path: '/user/:id/follower',
     name: 'follower',
-    component: () => import('../views/Follower.vue')
+    component: () => import('../views/Follower.vue'),
   },
   {
     path: '/user/:id/setting',
     name: 'setting',
-    component: () => import('../views/Setting.vue')
+    component: () => import('../views/Setting.vue'),
   },
   {
     path: '/user/:id',
     name: 'user',
-    component: () => import('../views/User.vue')
+    component: () => import('../views/User.vue'),
   },
   {
     path: '/admin/users',
     name: 'admin-users',
     component: () => import('../views/admin/AdminUsers.vue'),
-    beforeEnter: authorizeIsAdmin
+    beforeEnter: authorizeIsAdmin,
   },
   {
     path: '/admin/login',
     name: 'admin-login',
-    component: AdminLogin
+    component: AdminLogin,
   },
   {
     path: '/admin/main',
     name: 'admin-main',
     component: () => import('../views/admin/AdminMain'),
-    beforeEnter: authorizeIsAdmin
+    beforeEnter: authorizeIsAdmin,
   },
   {
     path: '/admin',
     exact: true,
-    redirect: '/admin/main'
+    redirect: '/admin/main',
   },
   {
     // 若沒有找到對應 path ，都會跑來這個 route
     path: '*',
     name: 'not-found',
-    component: NotFound
-  }
+    component: NotFound,
+  },
 ]
 
 const router = new VueRouter({
-  routes
+  routes,
 })
 
 router.beforeEach(async (to, from, next) => {
@@ -116,17 +131,18 @@ router.beforeEach(async (to, from, next) => {
   }
   // // 如果 access token 無效的話
   // if (!accessTokenValid) {
-  //   // 傳送 refresh token 至後端，取得 access token 
+  //   // 傳送 refresh token 至後端，取得 access token
   //   accessTokenValid = await store.dispatch('getAccessToken')
   // }
   // 不需要 access token 之頁面
   const pathWithoutAccessToken = ['login', 'admin-login', 'regist']
+
   // 若 accessTokenValid 為 false，且不是轉址到登入頁，則轉址到登入頁，若是要去登入頁則不用進入
   if (!accessTokenValid && !pathWithoutAccessToken.includes(to.name)) {
     next('/login')
     return
   }
-  // 若 accessTokenValid 為 true，無法進入 不需要 access token 
+  // 若 accessTokenValid 為 true，無法進入 不需要 access token
   if (accessTokenValid && pathWithoutAccessToken.includes(to.name)) {
     next('/')
     return
